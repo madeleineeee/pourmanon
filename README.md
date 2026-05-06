@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#F4EDDD">
+<title>Pour Manon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Italiana&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+body {
+  min-height: 100dvh;
+  font-family: "Fraunces", Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30;
+  font-weight: 420;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  /* Pan-x + pan-y autorisent le scroll vertical, désactivent pinch & double-tap zoom */
+  touch-action: pan-x pan-y;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+input {
+  font-family: inherit;
+  color: inherit;
+  font-size: 16px; /* évite le zoom iOS sur focus */
+}
+a { color: var(--porcelain); text-decoration: none; transition: color .2s var(--ease); }
+a:hover { color: var(--porcelain-deep); }
+:focus-visible { outline: 2px solid var(--porcelain); outline-offset: 3px; border-radius: 2px; }
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  /* Palette — porcelaine bleue sur tissu crème (fidèle au tissu inspiration) */
+  --cream: #F2EBDC;
+  --cream-light: #F8F1E2;
+  --cream-deep: #EADFC4;
+  --cream-warm: #F0E8D4;
+
+  --porcelain: #3B5D8C;
+  --porcelain-deep: #1E3A5F;
+  --porcelain-soft: #7A9BC4;
+  --porcelain-pale: #B8CBE2;
+  --porcelain-faint: rgba(59, 93, 140, 0.18);
+
+  --ink: #1D2735;
+  --ink-soft: #4A5869;
+  --ink-faint: #8A9099;
+
+  --gold: #B8965E;
+  --gold-soft: #D4B584;
+  --sage: #8FA584;
+
+  /* Type scale */
+  --fs-micro: .72rem;
+  --fs-xs: .82rem;
+  --fs-sm: .94rem;
+  --fs-base: 1.04rem;
+  --fs-md: 1.18rem;
+  --fs-lg: 1.42rem;
+  --fs-xl: 1.85rem;
+  --fs-2xl: 2.4rem;
+  --fs-3xl: 3.6rem;
+  --fs-hero: clamp(2.4rem, 10vw, 6.2rem);
+
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  /* Radii */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+
+  /* Shadows */
+  --sh-sm: 0 1px 2px rgba(30, 58, 95, 0.05), 0 1px 3px rgba(30, 58, 95, 0.07);
+  --sh-md: 0 4px 12px rgba(30, 58, 95, 0.08), 0 2px 4px rgba(30, 58, 95, 0.04);
+  --sh-lg: 0 18px 40px rgba(30, 58, 95, 0.15), 0 6px 14px rgba(30, 58, 95, 0.06);
+  --sh-xl: 0 40px 80px rgba(30, 58, 95, 0.22), 0 12px 24px rgba(30, 58, 95, 0.08);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Fonts */
+  --font-display: "Italiana", "Fraunces", Georgia, serif;
+  --font-serif: "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --font-romance: "Cormorant Garamond", Georgia, serif;
+  --font-script: "Pinyon Script", "Italiana", cursive;
+}
+
+/* ============================================================
+   FOND FLORAL — toile de Jouy aux roses bleues + animation
+   ============================================================ */
+.pattern-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: -3;
+  background: linear-gradient(180deg, #F8F1E2 0%, #F2EBDC 100%);
+  pointer-events: none;
+  overflow: hidden;
+  /* Force GPU layer pour que les anims tournent pendant le scroll */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: strict;
+}
+.pattern-bg svg.pattern-tile {
+  position: absolute;
+  inset: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  opacity: 0;
+  filter: blur(20px);
+  /* Force GPU layer */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation:
+    patternBloomIn 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards,
+    patternBreathe 14s ease-in-out 2.6s infinite,
+    patternDrift 120s ease-in-out 2.6s infinite;
+}
+@keyframes patternBloomIn {
+  0% { opacity: 0; filter: blur(20px); transform: scale(1.08); }
+  100% { opacity: 0.92; filter: blur(0); transform: scale(1); }
+}
+
+/* Voile blanc subtil pour la lisibilité */
+.pattern-veil {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80vw 70vh at 50% 50%, rgba(250, 245, 234, 0.25), transparent 70%),
+    linear-gradient(180deg, rgba(250, 245, 234, 0.3) 0%, transparent 30%, transparent 70%, rgba(250, 245, 234, 0.4) 100%);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Floraisons : fleurs qui s'épanouissent pétale par pétale */
+.blooms {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  /* Force GPU layer pour anim continue pendant scroll */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: strict;
+}
+.bloom {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  animation: bloomFade 22s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.bloom svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.bloom .b-petal {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  animation: petalBloom 22s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+.bloom .b-center {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  animation: centerBloom 22s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
+}
+.bloom .b-stem {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  will-change: stroke-dashoffset, opacity;
+  animation: stemDraw 22s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.bloom .b-leaf {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  animation: leafBloom 22s cubic-bezier(0.34, 1.4, 0.64, 1) infinite;
+}
+
+/* Animations FLUIDES — un seul ramp continu, pas de palier */
+@keyframes bloomFade {
+  0% { opacity: 0; }
+  20%, 75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes stemDraw {
+  0% { stroke-dashoffset: 80; opacity: 0; }
+  20%, 75% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes leafBloom {
+  0% { transform: scale(0); opacity: 0; }
+  35%, 75% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.05); opacity: 0; }
+}
+@keyframes petalBloom {
+  0% { transform: scale(0); opacity: 0; }
+  40%, 75% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+@keyframes centerBloom {
+  0% { transform: scale(0); opacity: 0; }
+  50%, 75% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+/* Effet respiration sur tout le motif — pulse d'opacité très lent */
+@keyframes patternBreathe {
+  0%, 100% { opacity: 0.92; }
+  50% { opacity: 0.82; }
+}
+/* Drift très subtil et plus fluide */
+@keyframes patternDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-8px, -10px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pattern-bg svg.pattern-tile { animation: none; }
+  .bloom { animation: none; opacity: 0.5; }
+  .bloom .b-petal, .bloom .b-center, .bloom .b-leaf { animation: none; transform: scale(1); }
+  .bloom .b-stem { animation: none; stroke-dashoffset: 0; }
+}
+
+/* ============================================================
+   INTRO SCREEN
+   ============================================================ */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  padding: calc(var(--s-5) + env(safe-area-inset-top)) var(--s-4) calc(var(--s-5) + env(safe-area-inset-bottom));
+  transition: opacity .7s var(--ease-out), visibility .7s var(--ease-out);
+  overflow-y: auto;
+}
+.intro.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  z-index: -1;
+}
+.intro-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.intro-pattern svg { width: 100%; height: 100%; }
+.intro-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  text-align: center;
+  padding: var(--s-6) var(--s-3);
+}
+@media (min-width: 600px) {
+  .intro-inner { padding: var(--s-8) var(--s-6); }
+}
+.intro-ornament {
+  width: 180px;
+  height: 30px;
+  margin: 0 auto var(--s-6);
+  opacity: 0;
+  animation: ornamentFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+@keyframes ornamentFade {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 0.75; transform: translateY(0); }
+}
+.intro-eyebrow {
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin-bottom: var(--s-3);
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.intro-eyebrow em {
+  font-family: var(--font-script);
+  font-style: normal;
+  font-size: 1.9em;
+  color: var(--porcelain);
+  line-height: 1;
+  padding: 0 .08em;
+  white-space: nowrap;
+  display: inline-block;
+  transform: translateY(0.08em);
+}
+.intro-hero {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-hero);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--porcelain-deep);
+  margin: var(--s-4) 0 var(--s-5);
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  word-break: break-word;
+  hyphens: auto;
+}
+.intro-hero .line-2 {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.74em;
+  color: var(--porcelain);
+  margin-top: .1em;
+}
+.intro-age {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  color: var(--ink);
+  letter-spacing: 0.1em;
+  padding: var(--s-3) var(--s-6);
+  border-top: 1px solid var(--porcelain-faint);
+  border-bottom: 1px solid var(--porcelain-faint);
+  margin: var(--s-4) 0;
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+}
+.intro-age strong {
+  font-weight: 600;
+  font-style: normal;
+  font-family: var(--font-display);
+  color: var(--porcelain-deep);
+  font-size: 1.15em;
+  letter-spacing: 0.02em;
+}
+.intro-love {
+  font-family: var(--font-romance);
+  font-weight: 400;
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  color: var(--ink-soft);
+  margin: var(--s-5) 0 var(--s-7);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
+}
+.intro-love .heart {
+  color: var(--porcelain);
+  font-size: 0.95em;
+  margin-left: 0.2em;
+}
+.btn-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-6);
+  background: var(--porcelain-deep);
+  color: var(--cream-light);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: background .3s var(--ease-out), transform .2s var(--ease-out), box-shadow .3s var(--ease-out);
+  box-shadow: var(--sh-md);
+  min-height: 52px;
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.7s forwards;
+}
+@media (hover: hover) {
+  .btn-enter:hover {
+    background: var(--porcelain);
+    transform: translateY(-2px);
+    box-shadow: var(--sh-lg);
+  }
+}
+.btn-enter:active {
+  transform: scale(0.97);
+}
+.btn-enter .arrow {
+  transition: transform .3s var(--ease-out);
+}
+.btn-enter:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   APP LAYOUT
+   ============================================================ */
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: calc(var(--s-5) + env(safe-area-inset-top)) var(--s-3) calc(var(--s-9) + env(safe-area-inset-bottom));
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 480px) {
+  .app { padding: calc(var(--s-5) + env(safe-area-inset-top)) var(--s-4) var(--s-9); }
+}
+@media (min-width: 640px) {
+  .app { padding: calc(var(--s-6) + env(safe-area-inset-top)) var(--s-5) var(--s-9); }
+}
+@media (min-width: 768px) {
+  .app { padding: calc(var(--s-8) + env(safe-area-inset-top)) var(--s-6) var(--s-9); }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--s-7);
+  padding: var(--s-5) var(--s-4);
+  background: rgba(252, 248, 238, 0.7);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(59, 93, 140, 0.18);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 6px 20px rgba(30, 58, 95, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+@media (min-width: 600px) {
+  .header { padding: var(--s-6) var(--s-5); margin-bottom: var(--s-7); margin-top: var(--s-3); }
+}
+.header-eyebrow {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--s-3);
+}
+.header-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 7vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--porcelain-deep);
+  margin-bottom: var(--s-3);
+}
+.header-title em {
+  font-family: var(--font-script);
+  font-style: normal;
+  font-size: 1.25em;
+  color: var(--porcelain);
+  padding: 0 0.06em;
+  line-height: 0.9;
+  display: inline-block;
+  transform: translateY(0.1em);
+}
+.header-sub {
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  color: var(--ink-soft);
+  max-width: 460px;
+  margin: 0 auto;
+  line-height: 1.45;
+}
+
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  margin: var(--s-6) auto var(--s-7);
+  color: var(--porcelain);
+  opacity: 0.55;
+}
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  flex: 0 0 60px;
+  height: 1px;
+  background: currentColor;
+}
+.ornament-divider svg { width: 20px; height: 20px; }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-1);
+  margin-bottom: var(--s-7);
+  padding: var(--s-2);
+  background: rgba(252, 248, 238, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(59, 93, 140, 0.18);
+  border-radius: 999px;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+.tab {
+  padding: var(--s-3) var(--s-5);
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: all .25s var(--ease);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  white-space: nowrap;
+}
+.tab:hover { color: var(--porcelain-deep); }
+.tab:active { transform: scale(0.96); }
+.tab.active {
+  background: var(--porcelain-deep);
+  color: var(--cream-light);
+}
+.tab-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.tab-panel { display: none; animation: fadeIn .4s var(--ease-out); }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   GRID DES JOURS
+   ============================================================ */
+.grid {
+  display: grid;
+  /* Mobile : 3 colonnes par défaut, 2 si vraiment petit */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+/* Très petits écrans : 2 colonnes */
+@media (max-width: 340px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+}
+@media (min-width: 420px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
+}
+@media (min-width: 560px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: var(--s-4); }
+}
+@media (min-width: 800px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-5); }
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 1 / 1.15;
+  background: rgba(252, 248, 238, 0.65);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(59, 93, 140, 0.18);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-3);
+  text-align: center;
+  cursor: pointer;
+  transition: transform .2s var(--ease-out), box-shadow .3s var(--ease-out), border-color .3s var(--ease-out), background .3s var(--ease-out);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(30, 58, 95, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  min-height: 100px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  opacity: 0;
+  animation: cardBloom 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--card-index, 0) * 60ms);
+}
+@keyframes cardBloom {
+  from { opacity: 0; transform: translateY(20px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sh-md);
+    border-color: var(--porcelain-soft);
+  }
+}
+.card:active { transform: scale(0.97); }
+.card.solved:active { transform: scale(0.98); }
+.card-number {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 9vw, 3.2rem);
+  line-height: 1;
+  color: var(--porcelain-deep);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--s-2);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+.card-label {
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: clamp(.68rem, 2.5vw, .82rem);
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+.card-ornament {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  width: 16px;
+  height: 16px;
+  color: var(--porcelain-soft);
+  opacity: 0.6;
+}
+.card-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--porcelain-soft);
+  opacity: 0.45;
+}
+.card-corner.tl { top: var(--s-2); left: var(--s-2); border-right: none; border-bottom: none; }
+.card-corner.br { bottom: var(--s-2); right: var(--s-2); border-left: none; border-top: none; }
+
+/* états */
+.card.locked {
+  background: rgba(252, 248, 238, 0.5);
+  cursor: not-allowed;
+}
+.card.locked .card-number { color: var(--porcelain-pale); }
+.card.locked .card-label { color: var(--ink-faint); }
+.card.locked:hover {
+  transform: none;
+}
+.card.available {
+  background: rgba(252, 248, 238, 0.75);
+  border-color: var(--porcelain-soft);
+  animation: cardBloom 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards, shimmer 3s ease-in-out 1s infinite;
+  animation-delay: calc(var(--card-index, 0) * 60ms), calc(var(--card-index, 0) * 60ms + 1s);
+}
+@keyframes shimmer {
+  0%, 100% { box-shadow: 0 2px 6px rgba(30, 58, 95, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 0 rgba(59, 93, 140, 0); }
+  50% { box-shadow: 0 4px 14px rgba(30, 58, 95, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 22px rgba(59, 93, 140, 0.18); }
+}
+.card.solved {
+  background: rgba(252, 248, 238, 0.78);
+  border-color: var(--porcelain);
+}
+.card.solved .card-number { color: var(--porcelain); }
+.card.solved::after {
+  content: "";
+  position: absolute;
+  bottom: var(--s-3);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--porcelain);
+  opacity: 0.7;
+}
+
+/* empty / wait state */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--s-7) var(--s-5);
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  line-height: 1.6;
+  background: rgba(252, 248, 238, 0.7);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(59, 93, 140, 0.18);
+  border-radius: var(--r-lg);
+  box-shadow: 0 8px 24px rgba(30, 58, 95, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  max-width: 560px;
+  margin: 0 auto;
+}
+.empty-state .big {
+  display: block;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  color: var(--porcelain-deep);
+  margin-bottom: var(--s-4);
+  line-height: 1.15;
+}
+.empty-state .ornament {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto var(--s-4);
+  color: var(--porcelain);
+}
+.empty-state .ornament svg { width: 36px; height: 36px; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+@media (min-width: 600px) {
+  .modal {
+    align-items: center;
+    padding: var(--s-4);
+  }
+}
+.modal.open { display: flex; animation: modalFadeIn .3s var(--ease-out); }
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 58, 95, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100dvh - 16px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: rgba(252, 248, 238, 0.85);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(59, 93, 140, 0.2);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: var(--s-6) var(--s-5) calc(var(--s-6) + env(safe-area-inset-bottom));
+  box-shadow: 0 -10px 40px rgba(30, 58, 95, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  animation: modalSlideUp .4s var(--ease-out);
+}
+@media (min-width: 600px) {
+  .modal-panel {
+    border-radius: var(--r-lg);
+    padding: var(--s-7) var(--s-6) var(--s-6);
+    animation: modalSlide .45s var(--ease-out);
+  }
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes modalSlide {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-close {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  transition: all .2s var(--ease);
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  line-height: 1;
+  background: rgba(244, 237, 221, 0.6);
+  z-index: 3;
+}
+.modal-close:hover { background: var(--cream-deep); color: var(--porcelain-deep); }
+.modal-close:active { transform: scale(0.9); }
+.modal-grab {
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 0 auto var(--s-5);
+  background: var(--porcelain-faint);
+  border-radius: 2px;
+}
+@media (min-width: 600px) {
+  .modal-grab { display: none; }
+}
+
+.modal-eyebrow {
+  font-family: var(--font-serif);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--porcelain);
+  margin-bottom: var(--s-3);
+  text-align: center;
+}
+.modal-day {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 8vw, 3.8rem);
+  line-height: 1;
+  color: var(--porcelain-deep);
+  text-align: center;
+  margin-bottom: var(--s-4);
+  letter-spacing: -0.01em;
+}
+.modal-ornament-lg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  margin: 0 auto var(--s-5);
+  color: var(--porcelain-soft);
+  opacity: 0.65;
+}
+.modal-ornament-lg::before,
+.modal-ornament-lg::after {
+  content: "";
+  flex: 0 0 40px;
+  height: 1px;
+  background: currentColor;
+}
+.modal-ornament-lg svg { width: 16px; height: 16px; }
+
+.modal-section-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: var(--s-4);
+}
+
+.enigme-text {
+  font-family: var(--font-romance);
+  font-weight: 400;
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: var(--s-6);
+  font-style: italic;
+  padding: 0 var(--s-2);
+}
+.enigme-form { display: flex; flex-direction: column; gap: var(--s-3); }
+.enigme-input {
+  width: 100%;
+  padding: var(--s-4) var(--s-4);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--ink);
+  background: rgba(252, 248, 238, 0.6);
+  border: 1px solid rgba(59, 93, 140, 0.22);
+  border-radius: var(--r-sm);
+  transition: all .2s var(--ease);
+  min-height: 52px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.enigme-input:focus {
+  outline: none;
+  border-color: var(--porcelain);
+  background: rgba(252, 248, 238, 0.85);
+  box-shadow: 0 0 0 3px rgba(59, 93, 140, 0.12);
+}
+.enigme-input::placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+.btn-submit {
+  padding: var(--s-4);
+  background: var(--porcelain-deep);
+  color: var(--cream-light);
+  font-family: var(--font-serif);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: var(--r-sm);
+  transition: background .25s var(--ease), transform .15s var(--ease);
+  min-height: 52px;
+}
+.btn-submit:hover { background: var(--porcelain); }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modal-error {
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: #B15454;
+  text-align: center;
+  margin-top: var(--s-3);
+  min-height: 1.4em;
+  opacity: 0;
+  transition: opacity .2s var(--ease);
+}
+.modal-error.show { opacity: 1; }
+
+.modal-success {
+  text-align: center;
+  padding: var(--s-3) 0;
+}
+.modal-success-ornament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--s-4);
+  color: var(--porcelain);
+}
+.modal-success-ornament svg { width: 56px; height: 56px; }
+.indice-text {
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  line-height: 1.55;
+  color: var(--ink);
+  text-align: center;
+  margin: var(--s-5) 0;
+  padding: 0 var(--s-3);
+  white-space: pre-line;
+}
+.indice-signature {
+  display: block;
+  font-family: var(--font-script);
+  font-style: normal;
+  font-size: var(--fs-xl);
+  color: var(--porcelain);
+  margin-top: var(--s-5);
+  opacity: 0.8;
+}
+
+/* Special: Jour 52 reveal */
+.card.day-52 {
+  background: rgba(252, 248, 238, 0.78);
+  border: 1px solid var(--porcelain);
+  box-shadow: 0 4px 14px rgba(184, 150, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.card.day-52 .card-number {
+  background: linear-gradient(135deg, var(--porcelain-deep), var(--porcelain));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   MESSAGES PANEL
+   ============================================================ */
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  max-width: 640px;
+  margin: 0 auto;
+}
+.message-card {
+  background: rgba(252, 248, 238, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(59, 93, 140, 0.18);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  position: relative;
+  transition: all .3s var(--ease-out);
+  opacity: 0;
+  animation: cardBloom 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--msg-index, 0) * 100ms);
+}
+@media (min-width: 600px) {
+  .message-card { padding: var(--s-6); }
+}
+@media (hover: hover) {
+  .message-card:hover {
+    box-shadow: var(--sh-md);
+    transform: translateY(-2px);
+  }
+}
+.message-card::before {
+  content: "";
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-3);
+  width: 18px;
+  height: 18px;
+  border-top: 1px solid var(--porcelain-soft);
+  border-left: 1px solid var(--porcelain-soft);
+  opacity: 0.5;
+}
+.message-card::after {
+  content: "";
+  position: absolute;
+  bottom: var(--s-3);
+  right: var(--s-3);
+  width: 18px;
+  height: 18px;
+  border-bottom: 1px solid var(--porcelain-soft);
+  border-right: 1px solid var(--porcelain-soft);
+  opacity: 0.5;
+}
+.message-number {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--porcelain);
+  margin-bottom: var(--s-3);
+  line-height: 1;
+}
+.message-text {
+  font-family: var(--font-romance);
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ink);
+  font-style: italic;
+}
+.message-text a {
+  color: var(--porcelain-deep);
+  font-style: normal;
+  font-weight: 500;
+  border-bottom: 1px solid var(--porcelain-soft);
+  padding-bottom: 2px;
+  word-break: break-all;
+}
+.message-card.accent {
+  background: rgba(252, 248, 238, 0.78);
+  border-color: var(--porcelain);
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(59, 93, 140, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.message-card.accent .message-text {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  letter-spacing: 0.12em;
+  color: var(--porcelain-deep);
+}
+.message-card.signature {
+  text-align: center;
+}
+.message-card.signature .message-text {
+  font-family: var(--font-script);
+  font-style: normal;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: var(--porcelain);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  margin-top: var(--s-9);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--porcelain-faint);
+  font-family: var(--font-romance);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: var(--ink-faint);
+}
+
+/* ============================================================
+   PREVIEW BADGE
+   ============================================================ */
+.preview-badge {
+  position: fixed;
+  top: var(--s-4);
+  right: var(--s-4);
+  z-index: 50;
+  padding: var(--s-2) var(--s-3);
+  background: var(--gold);
+  color: var(--cream-light);
+  font-family: var(--font-serif);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  box-shadow: var(--sh-sm);
+}
+
+/* ============================================================
+   UTILS & RESPONSIVE
+   ============================================================ */
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@media (max-width: 480px) {
+  .tab { padding: var(--s-3) var(--s-4); font-size: var(--fs-xs); letter-spacing: 0.06em; }
+  .tab-icon { display: none; }
+  .header { padding: var(--s-4) var(--s-3); }
+  .header-title { font-size: clamp(1.8rem, 9vw, 2.6rem); }
+  .header-eyebrow { font-size: 0.75rem; }
+  .header-sub { font-size: 0.92rem; }
+  .ornament-divider::before, .ornament-divider::after { flex: 0 0 30px; }
+  .ornament-divider { gap: var(--s-3); margin: var(--s-5) auto var(--s-6); }
+  .messages { gap: var(--s-4); padding: 0 var(--s-1); }
+  .message-card { padding: var(--s-4); }
+  .enigme-text { padding: 0; }
+  .indice-text { padding: 0; font-size: clamp(1.1rem, 4vw, 1.3rem); }
+  .modal-day { font-size: clamp(2rem, 9vw, 3rem); }
+  .card-number { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+}
+@media (max-width: 360px) {
+  .grid { gap: var(--s-2); }
+  .card { padding: var(--s-2); min-height: 88px; }
+  .card-number { font-size: 1.6rem; }
+  .card-label { font-size: 0.65rem; }
+  .header { padding: var(--s-3) var(--s-3); }
+  .header-title { font-size: clamp(1.5rem, 8vw, 2rem); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BACKGROUND PATTERN — Toile de Jouy aux roses bleues
+     ============================================================ -->
+<div class="pattern-bg" aria-hidden="true">
+  <svg class="pattern-tile" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 320 420">
+    <defs>
+      <!-- ====== ANÉMONE coronaria : 6 pétales cupped arrondis + cœur noir + couronne d'étamines ====== -->
+      <g id="daisy-lg">
+        <g>
+          <!-- 6 pétales arrondis avec forme de coupe (plus larges au bout, plus étroits à la base) -->
+          <g fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.55" stroke-linejoin="round">
+            <!-- chaque pétale : forme de palette arrondie, cupped -->
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z"/>
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z" transform="rotate(60)"/>
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z" transform="rotate(120)"/>
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z" transform="rotate(180)"/>
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z" transform="rotate(240)"/>
+            <path d="M -3,-3 Q -4.5,-7 -2,-9 Q 0,-10 2,-9 Q 4.5,-7 3,-3 Q 1.5,-2 0,-2 Q -1.5,-2 -3,-3 Z" transform="rotate(300)"/>
+          </g>
+          <!-- ligne ombre interne sur chaque pétale (effet gravure) -->
+          <g fill="none" stroke="#1E3A5F" stroke-width="0.35" opacity="0.7">
+            <path d="M 0,-8 Q 0,-6 0,-4"/>
+            <path d="M 0,-8 Q 0,-6 0,-4" transform="rotate(60)"/>
+            <path d="M 0,-8 Q 0,-6 0,-4" transform="rotate(120)"/>
+            <path d="M 0,-8 Q 0,-6 0,-4" transform="rotate(180)"/>
+            <path d="M 0,-8 Q 0,-6 0,-4" transform="rotate(240)"/>
+            <path d="M 0,-8 Q 0,-6 0,-4" transform="rotate(300)"/>
+          </g>
+          <!-- COURONNE D'ÉTAMINES — c'est la signature de l'anémone -->
+          <g stroke="#1E3A5F" stroke-width="0.4" stroke-linecap="round">
+            <!-- 12 petites étamines disposées en couronne autour du cœur -->
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" />
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(30)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(60)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(90)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(120)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(150)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(180)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(210)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(240)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(270)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(300)"/>
+            <line x1="0" y1="-3.5" x2="0" y2="-2.2" transform="rotate(330)"/>
+          </g>
+          <!-- petits points au bout des étamines (anthères) -->
+          <g fill="#1E3A5F">
+            <circle cx="0" cy="-3.5" r="0.35"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(30)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(60)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(90)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(120)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(150)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(180)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(210)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(240)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(270)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(300)"/>
+            <circle cx="0" cy="-3.5" r="0.35" transform="rotate(330)"/>
+          </g>
+          <!-- cœur central NOIR (la signature de l'anémone) -->
+          <circle cx="0" cy="0" r="2.2" fill="#1E3A5F"/>
+          <circle cx="0" cy="0" r="1.6" fill="none" stroke="#0F1F35" stroke-width="0.3"/>
+          <!-- pistils centraux (mouchetures noires) -->
+          <g fill="#0F1F35">
+            <circle cx="0.5" cy="-0.5" r="0.3"/>
+            <circle cx="-0.5" cy="0.5" r="0.3"/>
+            <circle cx="0.6" cy="0.6" r="0.25"/>
+            <circle cx="-0.6" cy="-0.6" r="0.25"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- ====== ANÉMONE petite : version simplifiée à 6 pétales arrondis ====== -->
+      <g id="daisy-sm">
+        <g>
+          <g fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.5" stroke-linejoin="round">
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z"/>
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z" transform="rotate(60)"/>
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z" transform="rotate(120)"/>
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z" transform="rotate(180)"/>
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z" transform="rotate(240)"/>
+            <path d="M -2,-2 Q -3,-5 -1,-6 Q 0,-7 1,-6 Q 3,-5 2,-2 Q 1,-1.5 0,-1.5 Q -1,-1.5 -2,-2 Z" transform="rotate(300)"/>
+          </g>
+          <circle cx="0" cy="0" r="1.6" fill="#1E3A5F"/>
+          <circle cx="0" cy="0" r="0.8" fill="#0F1F35"/>
+        </g>
+      </g>
+
+      <!-- ====== ÉGLANTINE : 5 pétales en forme de cœur (échancrés au bout) + étamines en couronne ====== -->
+      <g id="eglantine">
+        <g stroke="#1E3A5F" stroke-width="0.5" stroke-linejoin="round">
+          <!-- 5 pétales avec ÉCHANCRURE au bout (caractère distinctif des roses) -->
+          <g fill="#5C7FB0">
+            <!-- pétale = forme de cœur arrondi : large au bout avec petite entaille -->
+            <path d="M 0,-2.5 Q -2.5,-3 -3,-5 Q -3,-7 -1,-7.5 Q -0.3,-7.2 0,-6.8 Q 0.3,-7.2 1,-7.5 Q 3,-7 3,-5 Q 2.5,-3 0,-2.5 Z"/>
+            <path d="M 0,-2.5 Q -2.5,-3 -3,-5 Q -3,-7 -1,-7.5 Q -0.3,-7.2 0,-6.8 Q 0.3,-7.2 1,-7.5 Q 3,-7 3,-5 Q 2.5,-3 0,-2.5 Z" transform="rotate(72)"/>
+            <path d="M 0,-2.5 Q -2.5,-3 -3,-5 Q -3,-7 -1,-7.5 Q -0.3,-7.2 0,-6.8 Q 0.3,-7.2 1,-7.5 Q 3,-7 3,-5 Q 2.5,-3 0,-2.5 Z" transform="rotate(144)"/>
+            <path d="M 0,-2.5 Q -2.5,-3 -3,-5 Q -3,-7 -1,-7.5 Q -0.3,-7.2 0,-6.8 Q 0.3,-7.2 1,-7.5 Q 3,-7 3,-5 Q 2.5,-3 0,-2.5 Z" transform="rotate(216)"/>
+            <path d="M 0,-2.5 Q -2.5,-3 -3,-5 Q -3,-7 -1,-7.5 Q -0.3,-7.2 0,-6.8 Q 0.3,-7.2 1,-7.5 Q 3,-7 3,-5 Q 2.5,-3 0,-2.5 Z" transform="rotate(288)"/>
+          </g>
+          <!-- nervures sur les pétales -->
+          <g fill="none" stroke="#1E3A5F" stroke-width="0.3" opacity="0.7">
+            <path d="M 0,-3 Q 0,-5 0,-7"/>
+            <path d="M 0,-3 Q 0,-5 0,-7" transform="rotate(72)"/>
+            <path d="M 0,-3 Q 0,-5 0,-7" transform="rotate(144)"/>
+            <path d="M 0,-3 Q 0,-5 0,-7" transform="rotate(216)"/>
+            <path d="M 0,-3 Q 0,-5 0,-7" transform="rotate(288)"/>
+          </g>
+          <!-- COURONNE D'ÉTAMINES (jaune-doré dans la nature, ici stippées) -->
+          <g stroke="#1E3A5F" stroke-width="0.3" stroke-linecap="round">
+            <line x1="0" y1="-2" x2="0" y2="-1"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(30)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(60)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(90)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(120)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(150)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(180)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(210)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(240)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(270)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(300)"/>
+            <line x1="0" y1="-2" x2="0" y2="-1" transform="rotate(330)"/>
+          </g>
+          <!-- Anthères (points au bout des étamines) -->
+          <g fill="#1E3A5F">
+            <circle cx="0" cy="-2" r="0.3"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(30)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(60)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(90)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(120)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(150)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(180)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(210)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(240)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(270)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(300)"/>
+            <circle cx="0" cy="-2" r="0.3" transform="rotate(330)"/>
+          </g>
+          <!-- petit cœur central -->
+          <circle cx="0" cy="0" r="0.8" fill="#1E3A5F"/>
+        </g>
+      </g>
+
+      <!-- ====== MYOSOTIS : grappe de mini fleurs à pétales notchés (mouse-ear) + œil central ====== -->
+      <g id="myosotis">
+        <defs>
+          <!-- Une mini fleur de myosotis (réutilisable) -->
+          <g id="myosotis-single">
+            <!-- 5 pétales en forme de "mouse-ear" : ronds avec notch en bout -->
+            <g fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.3" stroke-linejoin="round">
+              <path d="M 0,-1 Q -0.9,-1.2 -1,-1.8 Q -0.5,-2.4 0,-2.2 Q 0.5,-2.4 1,-1.8 Q 0.9,-1.2 0,-1 Z"/>
+              <path d="M 0,-1 Q -0.9,-1.2 -1,-1.8 Q -0.5,-2.4 0,-2.2 Q 0.5,-2.4 1,-1.8 Q 0.9,-1.2 0,-1 Z" transform="rotate(72)"/>
+              <path d="M 0,-1 Q -0.9,-1.2 -1,-1.8 Q -0.5,-2.4 0,-2.2 Q 0.5,-2.4 1,-1.8 Q 0.9,-1.2 0,-1 Z" transform="rotate(144)"/>
+              <path d="M 0,-1 Q -0.9,-1.2 -1,-1.8 Q -0.5,-2.4 0,-2.2 Q 0.5,-2.4 1,-1.8 Q 0.9,-1.2 0,-1 Z" transform="rotate(216)"/>
+              <path d="M 0,-1 Q -0.9,-1.2 -1,-1.8 Q -0.5,-2.4 0,-2.2 Q 0.5,-2.4 1,-1.8 Q 0.9,-1.2 0,-1 Z" transform="rotate(288)"/>
+            </g>
+            <!-- Œil central (jaune dans la nature, ici stylisé sombre) -->
+            <circle cx="0" cy="0" r="0.6" fill="#86A6CC"/>
+            <circle cx="0" cy="0" r="0.3" fill="#1E3A5F"/>
+          </g>
+        </defs>
+        <!-- Tige courbée typique du Myosotis "queue de scorpion" -->
+        <path d="M 0,5 Q 1,2 -1,-1 Q -2,-3 0,-5" stroke="#1E3A5F" stroke-width="0.4" fill="none"/>
+        <!-- 5 mini fleurs en grappe le long de la tige -->
+        <use href="#myosotis-single" transform="translate(0,4)"/>
+        <use href="#myosotis-single" transform="translate(2,1.5)"/>
+        <use href="#myosotis-single" transform="translate(-1,-1)"/>
+        <use href="#myosotis-single" transform="translate(-2,-3.5)"/>
+        <use href="#myosotis-single" transform="translate(1,-5)"/>
+      </g>
+
+      <!-- ====== ROSE complète : pétales superposés en spirale ====== -->
+      <g id="rose-coil">
+        <g stroke="#1E3A5F" stroke-width="0.55" stroke-linejoin="round">
+          <!-- 5 pétales extérieurs ronds (comme une vraie rose) -->
+          <circle cx="-5.5" cy="-2" r="4" fill="#86A6CC"/>
+          <circle cx="5.5" cy="-2" r="4" fill="#86A6CC"/>
+          <circle cx="0" cy="-7" r="4" fill="#86A6CC"/>
+          <circle cx="-3.5" cy="4.5" r="4" fill="#86A6CC"/>
+          <circle cx="3.5" cy="4.5" r="4" fill="#86A6CC"/>
+          <!-- pétales intérieurs plus foncés -->
+          <circle cx="-2.5" cy="-1" r="2.8" fill="#5C7FB0"/>
+          <circle cx="2.5" cy="-1" r="2.8" fill="#5C7FB0"/>
+          <circle cx="0" cy="-3.5" r="2.8" fill="#5C7FB0"/>
+          <circle cx="0" cy="2" r="2.8" fill="#5C7FB0"/>
+          <!-- centre serré -->
+          <circle cx="0" cy="0" r="2.2" fill="#3B5D8C"/>
+          <circle cx="0" cy="0" r="1" fill="#1E3A5F"/>
+          <!-- mèches de spirale -->
+          <path d="M -1,-1 Q 0,0.5 1.5,0" stroke="#1E3A5F" stroke-width="0.4" fill="none"/>
+        </g>
+      </g>
+
+      <!-- ====== BOUTON allongé ====== -->
+      <g id="bud">
+        <g stroke="#2A4769" stroke-width="0.4">
+          <path d="M 0,0 Q -2,-2 -1.6,-5 Q 0,-7 1.6,-5 Q 2,-2 0,0 Z" fill="#5C7FB0"/>
+          <path d="M 0,-0.5 Q -1,-3 -0.6,-5" fill="none" stroke="#1E3A5F" stroke-width="0.3"/>
+          <!-- calice -->
+          <path d="M -1.5,0 Q -2.5,-1 -2,-2 M 1.5,0 Q 2.5,-1 2,-2" fill="none" stroke="#2A4769" stroke-width="0.35"/>
+        </g>
+      </g>
+
+      <!-- ====== FEUILLE COMPOSÉE DE ROSIER : 5 folioles dentelées sur tige ====== -->
+      <g id="leaf-rose">
+        <g stroke="#1E3A5F" stroke-width="0.55" stroke-linejoin="round">
+          <!-- rachis (tige principale) -->
+          <path d="M 0,0 L 0,-14" stroke="#1E3A5F" stroke-width="0.5" fill="none"/>
+          <!-- 2 paires de folioles latérales + 1 terminale -->
+          <!-- foliole bas-droite -->
+          <g transform="translate(2.5,-4) rotate(35)">
+            <path d="M 0,0 Q 0.5,-1 1,-1 Q 1,-2 1.5,-2 Q 1.5,-3 2,-3 Q 2,-4 2.5,-4 Q 1.5,-5 0,-5 Q -1.5,-4 -2,-3 Q -2,-2 -1.5,-1 Q -1,0 0,0 Z" fill="#5C7FB0"/>
+            <path d="M 0,-0.5 L 0,-4.5" stroke="#1E3A5F" stroke-width="0.3" fill="none"/>
+          </g>
+          <!-- foliole bas-gauche -->
+          <g transform="translate(-2.5,-4) rotate(-35)">
+            <path d="M 0,0 Q -0.5,-1 -1,-1 Q -1,-2 -1.5,-2 Q -1.5,-3 -2,-3 Q -2,-4 -2.5,-4 Q -1.5,-5 0,-5 Q 1.5,-4 2,-3 Q 2,-2 1.5,-1 Q 1,0 0,0 Z" fill="#5C7FB0"/>
+            <path d="M 0,-0.5 L 0,-4.5" stroke="#1E3A5F" stroke-width="0.3" fill="none"/>
+          </g>
+          <!-- foliole milieu-droite -->
+          <g transform="translate(3,-9) rotate(40)">
+            <path d="M 0,0 Q 0.5,-1.2 1.2,-1.2 Q 1.2,-2.5 2,-2.5 Q 2,-4 2.5,-4 Q 2.5,-5.5 3,-5.5 Q 1.8,-6.5 0,-6.5 Q -1.8,-5.5 -2.5,-4 Q -2.5,-2.5 -2,-1.2 Q -1,-0.5 0,0 Z" fill="#5C7FB0"/>
+            <path d="M 0,-0.5 L 0,-6" stroke="#1E3A5F" stroke-width="0.3" fill="none"/>
+          </g>
+          <!-- foliole milieu-gauche -->
+          <g transform="translate(-3,-9) rotate(-40)">
+            <path d="M 0,0 Q -0.5,-1.2 -1.2,-1.2 Q -1.2,-2.5 -2,-2.5 Q -2,-4 -2.5,-4 Q -2.5,-5.5 -3,-5.5 Q -1.8,-6.5 0,-6.5 Q 1.8,-5.5 2.5,-4 Q 2.5,-2.5 2,-1.2 Q 1,-0.5 0,0 Z" fill="#5C7FB0"/>
+            <path d="M 0,-0.5 L 0,-6" stroke="#1E3A5F" stroke-width="0.3" fill="none"/>
+          </g>
+          <!-- foliole terminale -->
+          <g transform="translate(0,-13)">
+            <path d="M 0,0 Q 1,-1 1.5,-1.5 Q 1.5,-3 2.2,-3 Q 2.2,-5 2.7,-5 Q 2.7,-7 2,-7.5 Q 1,-8 0,-8 Q -1,-8 -2,-7.5 Q -2.7,-7 -2.7,-5 Q -2.2,-5 -2.2,-3 Q -1.5,-3 -1.5,-1.5 Q -1,-1 0,0 Z" fill="#5C7FB0"/>
+            <path d="M 0,-0.5 L 0,-7.5" stroke="#1E3A5F" stroke-width="0.3" fill="none"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- ====== FEUILLE petite ====== -->
+      <g id="leaf-sm">
+        <g stroke="#2A4769" stroke-width="0.5">
+          <path d="M 0,0 Q 2.5,-3 2.2,-6 Q 0,-7.5 -2.2,-6 Q -2.5,-3 0,0 Z" fill="#5C7FB0" fill-opacity="0.85"/>
+          <path d="M 0,-0.5 L 0,-7" stroke="#1E3A5F" stroke-width="0.4" fill="none"/>
+        </g>
+      </g>
+
+      <!-- ====== FOUGÈRE pinnée — folioles oblongues lobées comme dryopteris ====== -->
+      <g id="fern">
+        <defs>
+          <!-- Foliole lobée individuelle, réutilisable à différentes échelles -->
+          <g id="fern-pinna">
+            <path d="M 0,0
+              Q 1,-0.5 1.5,-1
+              Q 2.5,-0.8 2.8,-1.5
+              Q 2.5,-2 2,-2.2
+              Q 3,-2.4 3.2,-3
+              Q 2.5,-3.4 2,-3.4
+              Q 2.5,-3.8 2.5,-4.2
+              Q 1.5,-4.5 0.5,-4.2
+              Q 0,-3.5 0,-2.5
+              Q 0,-1.5 0,-0.5 Z"
+              fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.3" stroke-linejoin="round"/>
+          </g>
+        </defs>
+        <!-- rachis (tige principale, légèrement courbée) -->
+        <path d="M 0,0 Q -1,-18 0,-36" stroke="#1E3A5F" stroke-width="0.55" fill="none"/>
+        <!-- 8 paires de folioles (qui rapetissent vers le sommet) -->
+        <use href="#fern-pinna" transform="translate(0,-3) rotate(-25) scale(1.2)"/>
+        <use href="#fern-pinna" transform="translate(0,-3) rotate(25) scale(-1.2,1.2)"/>
+        <use href="#fern-pinna" transform="translate(0,-7) rotate(-30) scale(1.25)"/>
+        <use href="#fern-pinna" transform="translate(0,-7) rotate(30) scale(-1.25,1.25)"/>
+        <use href="#fern-pinna" transform="translate(0,-11) rotate(-30) scale(1.3)"/>
+        <use href="#fern-pinna" transform="translate(0,-11) rotate(30) scale(-1.3,1.3)"/>
+        <use href="#fern-pinna" transform="translate(0,-15) rotate(-30) scale(1.2)"/>
+        <use href="#fern-pinna" transform="translate(0,-15) rotate(30) scale(-1.2,1.2)"/>
+        <use href="#fern-pinna" transform="translate(0,-19) rotate(-32) scale(1)"/>
+        <use href="#fern-pinna" transform="translate(0,-19) rotate(32) scale(-1,1)"/>
+        <use href="#fern-pinna" transform="translate(0,-23) rotate(-35) scale(0.85)"/>
+        <use href="#fern-pinna" transform="translate(0,-23) rotate(35) scale(-0.85,0.85)"/>
+        <use href="#fern-pinna" transform="translate(0,-27) rotate(-40) scale(0.7)"/>
+        <use href="#fern-pinna" transform="translate(0,-27) rotate(40) scale(-0.7,0.7)"/>
+        <use href="#fern-pinna" transform="translate(0,-31) rotate(-45) scale(0.55)"/>
+        <use href="#fern-pinna" transform="translate(0,-31) rotate(45) scale(-0.55,0.55)"/>
+        <!-- foliole terminale -->
+        <path d="M 0,-33 Q 0.8,-34 1,-35 Q 0.5,-36.5 0,-36.5 Q -0.5,-36.5 -1,-35 Q -0.8,-34 0,-33 Z" fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.3"/>
+      </g>
+
+      <!-- ====== VRILLE / TENDRIL ====== -->
+      <g id="tendril">
+        <g stroke="#2A4769" stroke-width="0.5" fill="none" stroke-linecap="round">
+          <path d="M 0,0 Q -3,-3 -5,-2 Q -7,0 -5,2 Q -3,3 -2,1 Q -1,-1 0,0"/>
+          <path d="M 0,0 Q 3,-3 5,-5 Q 7,-7 5,-9 Q 3,-9 2,-7 Q 1,-5 2,-3"/>
+        </g>
+      </g>
+
+      <!-- ====== BAIES (cluster de petits points) ====== -->
+      <g id="berries">
+        <g>
+          <circle cx="0" cy="0" r="1" fill="#3B5D8C" stroke="#1E3A5F" stroke-width="0.3"/>
+          <circle cx="2" cy="-1" r="0.9" fill="#3B5D8C" stroke="#1E3A5F" stroke-width="0.3"/>
+          <circle cx="-2" cy="-1" r="0.9" fill="#3B5D8C" stroke="#1E3A5F" stroke-width="0.3"/>
+          <circle cx="1" cy="1.5" r="0.7" fill="#3B5D8C" stroke="#1E3A5F" stroke-width="0.3"/>
+          <circle cx="-1" cy="1.5" r="0.7" fill="#3B5D8C" stroke="#1E3A5F" stroke-width="0.3"/>
+        </g>
+      </g>
+
+      <!-- ====== BRANCHE A : courbe descendante avec 2 daisies + boutons + feuilles ====== -->
+      <g id="branch-a">
+        <g>
+          <!-- tige courbée -->
+          <path d="M -20,-30 Q -10,-25 -5,-15 Q 5,-5 15,5 Q 25,15 35,25" stroke="#2A4769" stroke-width="0.55" fill="none"/>
+          <!-- feuilles le long de la tige -->
+          <use href="#leaf-rose" x="-15" y="-26" transform="rotate(-60 -15 -26)"/>
+          <use href="#leaf-rose" x="-2" y="-12" transform="rotate(35 -2 -12) scale(0.85)"/>
+          <use href="#leaf-rose" x="20" y="10" transform="rotate(-20 20 10) scale(0.9)"/>
+          <use href="#leaf-sm" x="10" y="0" transform="rotate(60 10 0)"/>
+          <!-- daisy au début -->
+          <use href="#daisy-lg" x="-20" y="-32"/>
+          <!-- daisy au milieu -->
+          <use href="#daisy-lg" x="15" y="5" transform="scale(0.95)"/>
+          <!-- bouton terminal -->
+          <use href="#bud" x="35" y="25" transform="rotate(40 35 25)"/>
+          <!-- petite fleur -->
+          <use href="#daisy-sm" x="0" y="-8"/>
+          <use href="#daisy-sm" x="28" y="20"/>
+          <!-- vrille -->
+          <use href="#tendril" x="-8" y="-22" transform="rotate(20 -8 -22)"/>
+        </g>
+      </g>
+
+      <!-- ====== BRANCHE B : rose-coil + fougère ====== -->
+      <g id="branch-b">
+        <g>
+          <!-- tige -->
+          <path d="M 10,40 Q 5,20 -5,5 Q -10,-10 -5,-30" stroke="#2A4769" stroke-width="0.55" fill="none"/>
+          <!-- fougère -->
+          <use href="#fern" x="-5" y="-30" transform="rotate(-15 -5 -30) scale(0.9)"/>
+          <!-- rose -->
+          <use href="#rose-coil" x="-5" y="5"/>
+          <use href="#rose-coil" x="8" y="20" transform="scale(0.85)"/>
+          <!-- feuilles -->
+          <use href="#leaf-rose" x="-12" y="0" transform="rotate(-50 -12 0)"/>
+          <use href="#leaf-rose" x="2" y="15" transform="rotate(45 2 15) scale(0.85)"/>
+          <use href="#leaf-sm" x="-8" y="-15" transform="rotate(-30 -8 -15)"/>
+          <!-- boutons -->
+          <use href="#bud" x="-3" y="-18" transform="rotate(-10 -3 -18)"/>
+          <!-- berries -->
+          <use href="#berries" x="13" y="32" transform="scale(0.8)"/>
+        </g>
+      </g>
+
+      <!-- ====== BRANCHE COURBE longue (sweep) — tige avec fleurs accrochées ====== -->
+      <g id="sweep">
+        <!-- tige courbée principale -->
+        <path d="M 0,0 Q 8,-3 18,-6 Q 30,-10 42,-15 Q 55,-22 68,-28" stroke="#2A4769" stroke-width="0.7" fill="none"/>
+        <!-- secondaires -->
+        <path d="M 18,-6 Q 22,-2 26,4" stroke="#2A4769" stroke-width="0.5" fill="none"/>
+        <path d="M 42,-15 Q 48,-12 52,-7" stroke="#2A4769" stroke-width="0.5" fill="none"/>
+        <!-- feuilles -->
+        <use href="#leaf-rose" x="10" y="-4" transform="rotate(80 10 -4) scale(0.85)"/>
+        <use href="#leaf-rose" x="35" y="-13" transform="rotate(70 35 -13) scale(0.85)"/>
+        <use href="#leaf-rose" x="60" y="-25" transform="rotate(60 60 -25) scale(0.8)"/>
+        <use href="#leaf-sm" x="22" y="-6" transform="rotate(-90 22 -6)"/>
+        <use href="#leaf-sm" x="48" y="-15" transform="rotate(-90 48 -15)"/>
+        <!-- petites fleurs accrochées -->
+        <use href="#daisy-sm" x="26" y="4" transform="scale(0.9)"/>
+        <use href="#daisy-sm" x="52" y="-7" transform="scale(0.9)"/>
+        <!-- boutons -->
+        <use href="#bud" x="68" y="-28" transform="rotate(45 68 -28)"/>
+        <!-- vrille -->
+        <use href="#tendril" x="0" y="0" transform="scale(0.7)"/>
+      </g>
+
+      <!-- ====== BOUQUET — composition fidèle au tissu ====== -->
+      <g id="bouquet">
+        <use href="#leaf-rose" x="-15" y="-2" transform="rotate(-70 -15 -2)"/>
+        <use href="#leaf-rose" x="15" y="-2" transform="rotate(70 15 -2)"/>
+        <use href="#leaf-rose" x="-8" y="-13" transform="rotate(-25 -8 -13) scale(0.9)"/>
+        <use href="#leaf-rose" x="8" y="-13" transform="rotate(25 8 -13) scale(0.9)"/>
+        <use href="#daisy-lg" x="0" y="-2" transform="scale(1.2)"/>
+        <use href="#daisy-sm" x="-11" y="3" transform="scale(1.2)"/>
+        <use href="#daisy-sm" x="11" y="4" transform="scale(1.2)"/>
+        <use href="#daisy-sm" x="0" y="-14" transform="scale(0.95)"/>
+        <use href="#bud" x="-15" y="-9" transform="rotate(-40 -15 -9)"/>
+        <use href="#bud" x="15" y="-10" transform="rotate(40 15 -10)"/>
+        <use href="#bud" x="0" y="-21"/>
+        <use href="#berries" x="0" y="11" transform="scale(0.9)"/>
+        <use href="#leaf-sm" x="-7" y="7" transform="rotate(-40 -7 7)"/>
+        <use href="#leaf-sm" x="7" y="7" transform="rotate(40 7 7)"/>
+      </g>
+
+      <!-- ====== Pattern principal — chintz dense avec anémones + églantines + myosotis ====== -->
+      <pattern id="toile" x="0" y="0" width="280" height="360" patternUnits="userSpaceOnUse">
+
+        <!-- ===== BOUQUET HAUT-GAUCHE ===== -->
+        <use href="#daisy-lg" x="58" y="60"/>
+        <use href="#eglantine" x="48" y="48" transform="scale(0.95)"/>
+        <use href="#eglantine" x="68" y="50" transform="scale(0.95)"/>
+        <use href="#leaf-rose" x="48" y="72" transform="rotate(-50 48 72) scale(1.1)"/>
+        <use href="#leaf-rose" x="68" y="72" transform="rotate(50 68 72) scale(1.1)"/>
+        <use href="#bud" x="56" y="42" transform="rotate(-15 56 42)"/>
+        <use href="#bud" x="73" y="52" transform="rotate(35 73 52)"/>
+        <use href="#fern" x="22" y="105" transform="rotate(-25 22 105) scale(0.85)"/>
+        <use href="#fern" x="92" y="115" transform="rotate(20 92 115) scale(0.8)"/>
+        <use href="#myosotis" x="80" y="85"/>
+        <use href="#sweep" x="70" y="100" transform="rotate(45 70 100) scale(0.9)"/>
+        <use href="#leaf-rose" x="35" y="155" transform="rotate(170 35 155) scale(0.95)"/>
+        <use href="#myosotis" x="42" y="160"/>
+        <use href="#bud" x="25" y="170" transform="rotate(-30 25 170)"/>
+
+        <!-- ===== BOUQUET BAS-GAUCHE ===== -->
+        <use href="#daisy-lg" x="58" y="225"/>
+        <use href="#eglantine" x="46" y="216" transform="scale(0.95)"/>
+        <use href="#eglantine" x="70" y="218" transform="scale(0.95)"/>
+        <use href="#leaf-rose" x="48" y="240" transform="rotate(-50 48 240) scale(1.1)"/>
+        <use href="#leaf-rose" x="68" y="240" transform="rotate(50 68 240) scale(1.1)"/>
+        <use href="#bud" x="56" y="208" transform="rotate(-15 56 208)"/>
+        <use href="#bud" x="73" y="216" transform="rotate(35 73 216)"/>
+        <use href="#fern" x="100" y="275" transform="rotate(25 100 275) scale(0.85)"/>
+        <use href="#fern" x="22" y="280" transform="rotate(-15 22 280) scale(0.8)"/>
+        <use href="#myosotis" x="38" y="252"/>
+        <use href="#sweep" x="68" y="245" transform="rotate(60 68 245) scale(0.9)"/>
+        <use href="#leaf-rose" x="78" y="320" transform="rotate(15 78 320) scale(0.95)"/>
+        <use href="#myosotis" x="35" y="330"/>
+
+        <!-- ===== BOUQUET HAUT-DROITE ===== -->
+        <use href="#daisy-lg" x="218" y="138"/>
+        <use href="#eglantine" x="206" y="128" transform="scale(0.95)"/>
+        <use href="#eglantine" x="230" y="130" transform="scale(0.95)"/>
+        <use href="#leaf-rose" x="206" y="152" transform="rotate(-50 206 152) scale(1.1)"/>
+        <use href="#leaf-rose" x="230" y="152" transform="rotate(50 230 152) scale(1.1)"/>
+        <use href="#bud" x="216" y="120" transform="rotate(-15 216 120)"/>
+        <use href="#bud" x="234" y="128" transform="rotate(35 234 128)"/>
+        <use href="#fern" x="182" y="180" transform="rotate(-30 182 180) scale(0.85)"/>
+        <use href="#fern" x="252" y="195" transform="rotate(15 252 195) scale(0.8)"/>
+        <use href="#myosotis" x="200" y="180"/>
+        <use href="#sweep" x="210" y="160" transform="rotate(220 210 160) scale(0.9)"/>
+        <use href="#leaf-rose" x="248" y="240" transform="rotate(-15 248 240) scale(0.95)"/>
+        <use href="#myosotis" x="200" y="245"/>
+        <use href="#bud" x="255" y="225" transform="rotate(30 255 225)"/>
+
+        <!-- ===== BOUQUET BAS-DROITE ===== -->
+        <use href="#daisy-lg" x="218" y="305"/>
+        <use href="#eglantine" x="206" y="296" transform="scale(0.95)"/>
+        <use href="#eglantine" x="230" y="298" transform="scale(0.95)"/>
+        <use href="#leaf-rose" x="206" y="320" transform="rotate(-50 206 320) scale(1.1)"/>
+        <use href="#leaf-rose" x="230" y="320" transform="rotate(50 230 320) scale(1.1)"/>
+        <use href="#fern" x="178" y="345" transform="rotate(-20 178 345) scale(0.85)"/>
+        <use href="#sweep" x="225" y="330" transform="rotate(140 225 330) scale(0.9)"/>
+
+        <!-- ===== BRANCHES centrales reliant ===== -->
+        <use href="#sweep" x="100" y="90" transform="rotate(-15 100 90) scale(0.9)"/>
+        <use href="#sweep" x="180" y="200" transform="rotate(195 180 200) scale(0.9)"/>
+
+        <!-- ===== CENTRE HAUT : églantine isolée + feuilles ===== -->
+        <use href="#eglantine" x="140" y="22" transform="scale(1.1)"/>
+        <use href="#leaf-rose" x="150" y="36" transform="rotate(50 150 36) scale(0.95)"/>
+        <use href="#leaf-rose" x="130" y="36" transform="rotate(-50 130 36) scale(0.95)"/>
+        <use href="#bud" x="148" y="10" transform="rotate(20 148 10)"/>
+        <use href="#myosotis" x="120" y="20"/>
+
+        <!-- ===== CENTRE MILIEU : rose-coil + feuilles ===== -->
+        <use href="#rose-coil" x="140" y="172" transform="scale(1.3)"/>
+        <use href="#leaf-rose" x="124" y="184" transform="rotate(-45 124 184) scale(1.05)"/>
+        <use href="#leaf-rose" x="156" y="184" transform="rotate(45 156 184) scale(1.05)"/>
+        <use href="#bud" x="135" y="155" transform="rotate(-15 135 155)"/>
+        <use href="#bud" x="148" y="155" transform="rotate(15 148 155)"/>
+        <use href="#myosotis" x="158" y="195"/>
+        <use href="#myosotis" x="120" y="195"/>
+
+        <!-- ===== CENTRE BAS : églantine + myosotis ===== -->
+        <use href="#eglantine" x="140" y="343" transform="scale(1.1)"/>
+        <use href="#leaf-rose" x="150" y="357" transform="rotate(50 150 357) scale(0.95)"/>
+        <use href="#leaf-rose" x="130" y="357" transform="rotate(-50 130 357) scale(0.95)"/>
+        <use href="#bud" x="125" y="335" transform="rotate(-25 125 335)"/>
+        <use href="#myosotis" x="160" y="335"/>
+
+        <!-- ===== BORDS GAUCHE & DROIT ===== -->
+        <use href="#myosotis" x="10" y="40"/>
+        <use href="#leaf-sm" x="18" y="55" transform="rotate(60 18 55)"/>
+        <use href="#myosotis" x="8" y="208"/>
+        <use href="#myosotis" x="15" y="320"/>
+        <use href="#bud" x="5" y="280" transform="rotate(-10 5 280)"/>
+
+        <use href="#myosotis" x="265" y="60"/>
+        <use href="#leaf-sm" x="270" y="72" transform="rotate(-40 270 72)"/>
+        <use href="#myosotis" x="270" y="285"/>
+        <use href="#myosotis" x="265" y="345"/>
+        <use href="#bud" x="272" y="40" transform="rotate(20 272 40)"/>
+
+        <!-- ===== Bord HAUT/BAS pour continuité ===== -->
+        <use href="#leaf-rose" x="100" y="5" transform="rotate(15 100 5) scale(0.8)"/>
+        <use href="#leaf-rose" x="180" y="5" transform="rotate(-25 180 5) scale(0.8)"/>
+        <use href="#myosotis" x="80" y="0" transform="scale(0.95)"/>
+        <use href="#bud" x="200" y="0" transform="rotate(-15 200 0)"/>
+        <use href="#leaf-rose" x="90" y="355" transform="rotate(-165 90 355) scale(0.8)"/>
+        <use href="#leaf-rose" x="195" y="355" transform="rotate(165 195 355) scale(0.8)"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#toile)"/>
+  </svg>
+</div>
+<div class="pattern-veil" aria-hidden="true"></div>
+
+<!-- Floraisons : 15 fleurs qui s'épanouissent pétale par pétale, sans rollback -->
+<div class="blooms" aria-hidden="true" id="blooms-container"></div>
+<script>
+// Génération dynamique des blooms pour code propre
+(function() {
+  // Mobile-safe : tailles réduites + positions toujours dans la zone visible
+  const isNarrow = window.innerWidth < 480;
+  const sizeMul = isNarrow ? 0.65 : 1;
+  const positions = [
+    { top:'8%',  left:'10%', size:70, delay:0,    light:true  },
+    { top:'18%', left:'72%', size:58, delay:-2.5, light:false },
+    { top:'30%', left:'40%', size:48, delay:-5,   light:true  },
+    { top:'42%', left:'60%', size:54, delay:-7.5, light:false },
+    { top:'52%', left:'12%', size:64, delay:-10,  light:true  },
+    { top:'58%', left:'78%', size:50, delay:-12,  light:false },
+    { top:'70%', left:'28%', size:54, delay:-14,  light:true  },
+    { top:'82%', left:'52%', size:62, delay:-1.2, light:false },
+    { top:'90%', left:'18%', size:46, delay:-3.7, light:true  },
+    { top:'86%', left:'72%', size:58, delay:-6.2, light:false },
+    { top:'14%', left:'48%', size:50, delay:-8.7, light:true  },
+    { top:'6%',  left:'62%', size:42, delay:-11.2,light:false },
+    { top:'68%', left:'48%', size:44, delay:-13.7,light:true  },
+    { top:'24%', left:'22%', size:46, delay:-16.2,light:false },
+    { top:'48%', left:'80%', size:40, delay:-9.5, light:true  }
+  ];
+
+  const stem = (delay) => `<path class="b-stem" d="M 0,30 Q ${(Math.random()*4-2).toFixed(1)},15 0,0" fill="none" stroke="#1E3A5F" stroke-width="0.8" style="animation-delay: ${delay}s;"/>`;
+
+  const leaf = (x, y, rot, delay) => `<ellipse class="b-leaf" cx="${x}" cy="${y}" rx="3" ry="6" fill="#5C7FB0" stroke="#1E3A5F" stroke-width="0.4" transform="rotate(${rot} ${x} ${y})" style="animation-delay: ${delay}s;"/>`;
+
+  const petal = (cx, cy, color, delay) => `<circle class="b-petal" cx="${cx}" cy="${cy}" r="9" fill="${color}" stroke="#1E3A5F" stroke-width="0.5" style="animation-delay: ${delay}s;"/>`;
+
+  const center = (delay) => `<circle class="b-center" cx="0" cy="0" r="5" fill="#1E3A5F" style="animation-delay: ${delay}s;"/>`;
+
+  const html = positions.map(p => {
+    const color = p.light ? '#86A6CC' : '#5C7FB0';
+    const d = p.delay;
+    const size = Math.round(p.size * sizeMul);
+    const stagger = (i) => (d + i*0.08).toFixed(2);
+    return `<div class="bloom" style="top:${p.top}; left:${p.left}; width:${size}px; height:${size}px; animation-delay:${d}s;">
+      <svg viewBox="-30 -30 60 60">
+        ${stem(d)}
+        ${leaf(-7, 18, -30, d.toFixed(2))}
+        ${leaf(6, 14, 30, (d+0.1).toFixed(2))}
+        ${petal(0, -13, color, stagger(0))}
+        ${petal(12.4, -4, color, stagger(1))}
+        ${petal(7.6, 10.5, color, stagger(2))}
+        ${petal(-7.6, 10.5, color, stagger(3))}
+        ${petal(-12.4, -4, color, stagger(4))}
+        ${center((d+0.5).toFixed(2))}
+      </svg>
+    </div>`;
+  }).join('');
+
+  document.getElementById('blooms-container').innerHTML = html;
+})();
+</script>
+
+<!-- ============================================================
+     INTRO SCREEN
+     ============================================================ -->
+<section class="intro" id="intro">
+  <div class="intro-inner">
+    <svg class="intro-ornament" viewBox="0 0 180 30" fill="none" aria-hidden="true">
+      <path d="M 10,15 L 70,15" stroke="#3B5D8C" stroke-width="0.8"/>
+      <path d="M 110,15 L 170,15" stroke="#3B5D8C" stroke-width="0.8"/>
+      <circle cx="80" cy="15" r="3" fill="none" stroke="#3B5D8C" stroke-width="0.8"/>
+      <circle cx="100" cy="15" r="3" fill="none" stroke="#3B5D8C" stroke-width="0.8"/>
+      <path d="M 87,15 Q 90,10 93,15 Q 90,20 87,15 Z" fill="#3B5D8C" fill-opacity="0.6"/>
+    </svg>
+    <p class="intro-eyebrow">Pour toi, <em>Loute</em></p>
+    <h1 class="intro-hero">
+      Joyeux
+      <span class="line-2">anniversaire</span>
+    </h1>
+    <p class="intro-age"><strong>19</strong> &nbsp;ans</p>
+    <p class="intro-love">que du love <span class="heart">❤</span></p>
+    <button class="btn-enter" onclick="enterSite()">
+      Entrer dans la surprise
+      <svg class="arrow" width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+        <path d="M 1,6 L 16,6 M 11,1 L 16,6 L 11,11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<!-- ============================================================
+     APP
+     ============================================================ -->
+<main class="app" id="app" hidden>
+
+  <header class="header">
+    <p class="header-eyebrow">— Joyeux anniversaire —</p>
+    <h2 class="header-title">Pour <em>Manon</em></h2>
+    <p class="header-sub">Un indice par jour. Un matin après l'autre. Jusqu'à ce que tout se révèle.</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="indices" role="tab" aria-selected="true">
+      <svg class="tab-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M 5,1 C 5,3 3,4 2,5 C 1,6 1,8 2,9 L 12,9 C 13,8 13,6 12,5 C 11,4 9,3 9,1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <circle cx="7" cy="12" r="1" fill="currentColor"/>
+      </svg>
+      Indices
+    </button>
+    <button class="tab" data-tab="messages" role="tab" aria-selected="false">
+      <svg class="tab-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M 1,3 L 13,3 L 13,11 L 1,11 Z M 1,3 L 7,8 L 13,3" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+      </svg>
+      Messages
+    </button>
+  </nav>
+
+  <!-- PANEL INDICES -->
+  <section class="tab-panel active" id="panel-indices" role="tabpanel">
+    <div class="ornament-divider" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none">
+        <path d="M 10,2 Q 6,7 10,10 Q 14,7 10,2 Z" fill="currentColor" fill-opacity="0.8"/>
+        <path d="M 10,10 Q 6,13 10,18 Q 14,13 10,10 Z" fill="currentColor" fill-opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- PANEL MESSAGES -->
+  <section class="tab-panel" id="panel-messages" role="tabpanel">
+    <div class="ornament-divider" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none">
+        <path d="M 10,3 C 13,3 14,6 10,10 C 6,6 7,3 10,3 Z" fill="currentColor" fill-opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="messages" id="messages"></div>
+  </section>
+
+  <footer class="footer">
+    <p>écrit avec soin — <span style="font-family: var(--font-script); font-size: 1.3em; color: var(--porcelain);">quelqu'un qui t'aime</span></p>
+  </footer>
+</main>
+
+<!-- ============================================================
+     MODAL ÉNIGME
+     ============================================================ -->
+<div class="modal" id="modal-enigme" role="dialog" aria-modal="true" aria-labelledby="enigme-day-label">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-panel">
+    <span class="modal-grab" aria-hidden="true"></span>
+    <button class="modal-close" onclick="closeModal()" aria-label="Fermer">×</button>
+    <p class="modal-eyebrow">Énigme</p>
+    <div class="modal-day" id="enigme-day" aria-label="Jour">01</div>
+    <div class="modal-ornament-lg" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M 8,2 Q 5,6 8,8 Q 11,6 8,2 Z" fill="currentColor" fill-opacity="0.7"/>
+      </svg>
+    </div>
+    <p class="modal-section-title">Histoire — Question du jour</p>
+    <p class="enigme-text" id="enigme-text"></p>
+    <form class="enigme-form" id="enigme-form" onsubmit="return submitEnigme(event)">
+      <input
+        type="text"
+        class="enigme-input"
+        id="enigme-input"
+        placeholder="Ta réponse…"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false">
+      <button type="submit" class="btn-submit">Valider</button>
+    </form>
+    <p class="modal-error" id="enigme-error">Ce n'est pas la bonne réponse. Essaie encore.</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL INDICE
+     ============================================================ -->
+<div class="modal" id="modal-indice" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-panel">
+    <span class="modal-grab" aria-hidden="true"></span>
+    <button class="modal-close" onclick="closeModal()" aria-label="Fermer">×</button>
+    <p class="modal-eyebrow">Indice</p>
+    <div class="modal-day" id="indice-day">01</div>
+    <div class="modal-ornament-lg" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M 8,2 Q 4,5 6,10 Q 8,12 10,10 Q 12,5 8,2 Z M 8,12 L 8,14" stroke="currentColor" stroke-width="0.7" fill="currentColor" fill-opacity="0.4"/>
+      </svg>
+    </div>
+    <p class="indice-text" id="indice-text"></p>
+    <span class="indice-signature" id="indice-signature">—</span>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA — 52 JOURS : INDICES + ÉNIGMES HISTORIQUES + RÉPONSES
+   ============================================================ */
+const DAYS_DATA = [
+  /* 1 */ {
+    indice: `Il y a des cadeaux qu'on déballe. Et d'autres… qu'on attend.`,
+    enigme: `Je suis le traité signé en 843 qui divise l'empire carolingien entre les trois petits-fils de Charlemagne. Je donne naissance aux futures France, Germanie et Lotharingie. Que suis-je ?`,
+    reponses: [`traite de verdun`, `verdun`, `le traite de verdun`]
+  },
+  /* 2 */ {
+    indice: `Le tien ne prendra pas de place. Mais il en prendra beaucoup dans tes souvenirs.`,
+    enigme: `Philippe IV le Bel fit arrêter en masse les membres de cet ordre militaire et religieux le vendredi 13 octobre 1307. Leur grand maître fut brûlé vif en 1314 en lançant une malédiction sur le roi. Quel était cet ordre ?`,
+    reponses: [`templiers`, `les templiers`, `ordre des templiers`, `ordre du temple`]
+  },
+  /* 3 */ {
+    indice: `Ce cadeau ne se garde pas. Il se vit.`,
+    enigme: `Cette femme, épouse de Louis XVI, reçut le surnom de « Madame Déficit » avant d'être guillotinée en octobre 1793. Mais quel était son prénom de naissance complet, avant francisation ?`,
+    reponses: [`maria antonia`, `maria antonia josepha johanna`]
+  },
+  /* 4 */ {
+    indice: `Tu ne pourras pas l'ouvrir tout de suite. Mais il commence déjà.`,
+    enigme: `Je suis le philosophe grec qui, condamné à mort par la cité d'Athènes en 399 av. J.-C., refusa de s'exiler et but la ciguë. Mais qui a réellement consigné ma mort par écrit, n'étant pas présent ce jour-là ?`,
+    reponses: [`platon`, `plato`]
+  },
+  /* 5 */ {
+    indice: `Ce que je t'offre ne dure pas… mais reste longtemps.`,
+    enigme: `Lors de la bataille d'Azincourt en 1415, les archers anglais d'Henri V écrasèrent la chevalerie française. Quelle innovation tactique décisive — liée à une arme — explique cette victoire dévastatrice ?`,
+    reponses: [`arc long`, `longbow`, `long bow`, `l arc long`]
+  },
+  /* 6 */ {
+    indice: `Il y aura un moment précis où tout deviendra clair.`,
+    enigme: `Je suis le pape qui excommunia l'empereur Henri IV en 1076, le forçant à venir s'humilier pieds nus dans la neige au château de Canossa. Qui suis-je ?`,
+    reponses: [`gregoire vii`, `gregoire 7`, `gregoire vii hildebrand`, `hildebrand`]
+  },
+  /* 7 */ {
+    indice: `Et ce moment… n'est pas pour tout de suite.`,
+    enigme: `Léonard de Vinci mourut en 1519 dans les bras d'un roi de France, dans le château du Clos Lucé. Quel était ce roi, grand admirateur de la Renaissance italienne ?`,
+    reponses: [`francois premier`, `francois 1er`, `francois ier`, `francois i`, `francois 1`]
+  },
+  /* 8 */ {
+    indice: `Ce matin j'ai regardé la lumière changer sur un mur pendant dix minutes. C'est tout. Et pourtant c'était suffisant.`,
+    enigme: `Je suis l'unique bataille où Napoléon affronta simultanément deux armées ennemies — prussienne et autrichienne — et les vainquit séparément le même jour en décembre 1805. On m'appelle « la bataille des trois empereurs ». Où ai-je eu lieu ?`,
+    reponses: [`austerlitz`, `bataille d austerlitz`, `la bataille d austerlitz`]
+  },
+  /* 9 */ {
+    indice: `Il y a une théorie qui dit que chaque décision crée un univers parallèle. J'aime l'idée qu'il existe quelque part une version de toi qui sait déjà.`,
+    enigme: `Cet historien grec du Vème siècle av. J.-C., surnommé « père de l'Histoire », mélangea faits avérés et récits mythologiques dans son œuvre sur les guerres médiques. Qui est-il ?`,
+    reponses: [`herodote`]
+  },
+  /* 10 */ {
+    indice: `Les grandes choses ne préviennent pas. Elles arrivent comme l'orage. On sent juste, dans l'air, quelque chose qui change de pression. Il existe des endroits où même les pierres ont appris à écouter. Où le silence a une forme et la nuit, une couleur.`,
+    enigme: `La Déclaration des droits de l'homme et du citoyen de 1789 s'inspire directement d'un texte américain. Mais elle s'inspire aussi d'un philosophe français des Lumières qui théorisa la séparation des pouvoirs. Lequel ?`,
+    reponses: [`montesquieu`, `charles de secondat`, `baron de montesquieu`]
+  },
+  /* 11 */ {
+    indice: `Chère Manon, je t'écris depuis un endroit que tu ne connais pas encore. L'air y est différent. Le temps aussi. Je ne peux pas te dire où c'est. Pas encore.`,
+    enigme: `Je suis la reine de France qui régna comme régente pendant la minorité de son fils Charles IX et fut accusée d'avoir orchestré le massacre de la Saint-Barthélemy en 1572. Qui suis-je ?`,
+    reponses: [`catherine de medicis`, `catherine de medici`]
+  },
+  /* 12 */ {
+    indice: `Il existe des jardins où même les pierres ont appris à écouter. Où le silence a une forme et la nuit, une couleur.`,
+    enigme: `Alexandre le Grand mourut à Babylone en 323 av. J.-C. à seulement 32 ans. Les historiens débattent encore de la cause de sa mort. Quelle est la théorie la plus récente et sérieuse avancée par les chercheurs ?`,
+    reponses: [`syndrome de guillain barre`, `guillain barre`, `guillain barre strohl`, `syndrome guillain barre`]
+  },
+  /* 13 */ {
+    indice: `Question sérieuse : parmi ces sensations, laquelle se rapproche le plus de ce qui t'attend ?\nA) Plonger dans une eau froide en plein été\nB) Ouvrir un livre et ne plus pouvoir s'arrêter\nC) Entendre quelque chose pour la première fois et avoir l'impression de le connaître depuis toujours\nD) Apprendre une folie mais ne jamais pouvoir rien dire.`,
+    enigme: `Ce cardinal, véritable homme fort de la France de Louis XIII, fit construire le Palais-Royal, fonda l'Académie française en 1635 et signa le traité de Westphalie… Non, ce dernier point est faux. Qui est-il ? (Westphalie fut signé par Mazarin.)`,
+    reponses: [`richelieu`, `cardinal de richelieu`, `armand jean du plessis`, `le cardinal de richelieu`]
+  },
+  /* 14 */ {
+    indice: `Elle n'avait pas prévu d'être émue. Elle avait pourtant préparé ses défenses, les bras croisés, le regard détaché, le scepticisme bien rangé dans sa poche. Ça n'avait servi à rien.`,
+    enigme: `Je suis l'édit signé par Henri IV en 1598 qui accordait la liberté de culte aux protestants. Dans quelle ville fut-il signé ?`,
+    reponses: [`nantes`, `edit de nantes`, `l edit de nantes`]
+  },
+  /* 15 */ {
+    indice: `Choses qui arrivent une fois :\n— Le premier mot qu'on lit\n— La première fois qu'on comprend quelque chose de grand\n— Certains soirs de juin\n— Certaines notes\n— Certains cadeaux`,
+    enigme: `Lors du procès de Galilée en 1633, il fut condamné à abjurer sa théorie héliocentrique. Devant quel tribunal exactement fut-il jugé ?`,
+    reponses: [`inquisition romaine`, `inquisition`, `la sainte inquisition`, `saint office`]
+  },
+  /* 16 */ {
+    indice: `Je suis fait de patience et de secret. Je grossis chaque jour sans qu'on me voie. Je disparais en un instant au moment où j'arrive.\n(Ne réponds pas encore.)`,
+    enigme: `Cette impératrice byzantine du VIème siècle, ancienne actrice et courtisane, devint l'une des femmes les plus puissantes de l'histoire en épousant Justinien Ier. Elle joua un rôle décisif lors de la révolte de Nika en 532. Qui est-elle ?`,
+    reponses: [`theodora`, `theodora de byzance`, `theodora ire`]
+  },
+  /* 17 */ {
+    indice: `Si quelqu'un avait composé un poème rien que pour toi, comment est-ce qu'il sonnerait ?`,
+    enigme: `Je suis le philosophe et mathématicien grec qui calcula la circonférence de la Terre au IIIème siècle av. J.-C. avec une précision remarquable, en mesurant les ombres à Alexandrie et à Syène. Qui suis-je ?`,
+    reponses: [`eratosthene`, `eratosthene de cyrene`]
+  },
+  /* 18 */ {
+    indice: `Le lundi ne sait rien. Le mardi se doute. Le mercredi garde le silence. Le jeudi ment très bien. Le vendredi sourit. Le samedi attend. Le dimanche sait tout mais ne dit rien.`,
+    enigme: `La Fronde fut une série de guerres civiles en France entre 1648 et 1653. Quel jeune roi, traumatisé par cet événement, en tira la leçon politique qui façonna tout son règne absolu ?`,
+    reponses: [`louis xiv`, `louis 14`, `louis quatorze`, `le roi soleil`]
+  },
+  /* 19 */ {
+    indice: `Bulletin du jour : ciel dégagé sur les secrets bien gardés. Légère brise de mystère en fin de journée. Températures stables. Aucune révélation prévue avant longtemps.`,
+    enigme: `Ce roi d'Angleterre fut le seul monarque anglais à être jugé, condamné et décapité publiquement en 1649 devant son propre palais de Whitehall. Qui était-il ?`,
+    reponses: [`charles premier`, `charles 1er`, `charles ier`, `charles i`, `charles 1`, `charles stuart`]
+  },
+  /* 20 */ {
+    indice: `Est-ce qu'un cadeau existe avant qu'on l'offre ? Ou est-ce qu'il n'existe vraiment que dans les yeux de celui qui le reçoit ?`,
+    enigme: `Je suis le texte rédigé en 1215 qui limita pour la première fois le pouvoir royal en Angleterre et posa les bases des libertés individuelles. Mon nom latin signifie « Grande Charte ». Comment m'appelle-t-on ?`,
+    reponses: [`magna carta`, `la magna carta`, `grande charte`, `la grande charte`, `magna carta libertatum`]
+  },
+  /* 21 */ {
+    indice: `Ton signe du jour : quelque chose approche. Les astres ne donnent pas plus de détails. Ils sont comme ça, les astres !! Vagues et satisfaits d'eux-mêmes.`,
+    enigme: `Cette bataille de 732 stoppa l'avancée musulmane en Europe occidentale. Charles Martel y vainquit Abd al-Rahman. Les historiens contestent son nom traditionnel — entre deux villes. Donne-moi l'une d'entre elles.`,
+    reponses: [`poitiers`, `tours`, `bataille de poitiers`, `bataille de tours`, `poitiers tours`, `tours poitiers`]
+  },
+  /* 22 */ {
+    indice: `Il y a des nuits qui ne ressemblent à aucune autre. Pas parce qu'il s'y passe quelque chose d'extraordinaire. Mais parce qu'on est exactement là où on devait être.`,
+    enigme: `Je suis l'architecte intellectuel de la Terreur, surnommé « l'Incorruptible », qui finit lui-même guillotiné le 9 thermidor an II. Qui suis-je ?`,
+    reponses: [`robespierre`, `maximilien de robespierre`, `maximilien robespierre`]
+  },
+  /* 23 */ {
+    indice: `Il avait fallu des mois pour tout préparer. Des détails minuscules, des décisions silencieuses, des moments où on se demande si ça vaut la peine. Puis vient le moment où on sait que oui.`,
+    enigme: `Sophocle, Eschyle, Euripide — trois grands tragédiens grecs. Lequel des trois n'a JAMAIS remporté le premier prix aux Dionysies, malgré son immense postérité ?`,
+    reponses: [`euripide`]
+  },
+  /* 24 */ {
+    indice: `Parmi ces endroits, lequel préfères-tu ?\nA) Une forêt la nuit\nB) Une grande salle vide\nC) Un jardin à l'aube\nD) Un endroit que tu n'as pas encore visité.`,
+    enigme: `Je suis le concile œcuménique qui se tint de 1545 à 1563 et constitua la réponse officielle de l'Église catholique à la Réforme protestante. Dans quelle ville du Tyrol eut-il lieu ?`,
+    reponses: [`concile de trente`, `trente`, `trento`, `le concile de trente`]
+  },
+  /* 25 */ {
+    indice: `Choses que ton cadeau n'est pas :\n— Une voiture\n— Un aspirateur\n— Un bon de réduction chez Carrefour\n— Une déception\n— Quelque chose d'ordinaire`,
+    enigme: `Cet explorateur portugais fut le premier Européen à atteindre les Indes par la route maritime du Cap de Bonne-Espérance en 1498. Qui est-il ?`,
+    reponses: [`vasco de gama`, `vasco da gama`]
+  },
+  /* 26 */ {
+    indice: `Qu'est-ce qui te calme instantanément, peu importe l'état dans lequel tu es ?`,
+    enigme: `Je suis la bataille de 1214 où Philippe Auguste de France écrasa une coalition réunissant l'Angleterre, l'Empire germanique et le comté de Flandre. Je suis souvent considérée comme la naissance de la nation française. Où ai-je eu lieu ?`,
+    reponses: [`bouvines`, `bataille de bouvines`, `la bataille de bouvines`]
+  },
+  /* 27 */ {
+    indice: `Juin arrive avec ses soirs qui n'en finissent pas, sa lumière qui tarde à partir, comme si elle aussi savait que certaines choses méritent qu'on s'attarde.`,
+    enigme: `César fut assassiné aux Ides de Mars — le 15 mars 44 av. J.-C. Les conjurés étaient 23. Mais combien de coups de couteau reçut-il réellement, selon l'autopsie réalisée par le médecin Antistius ?`,
+    reponses: [`23`, `23 coups`, `vingt trois`, `vingt trois coups`]
+  },
+  /* 28 */ {
+    indice: `Je suis plus grand qu'une chambre et plus petit qu'une ville. Je suis plus vieux que toi et plus jeune que l'histoire. On m'a construit pour durer mais c'est la nuit qu'on me voit vraiment. Le jour je garde mes secrets.`,
+    enigme: `Cette reine d'Écosse, cousine d'Élisabeth Ière d'Angleterre, fut retenue prisonnière pendant 19 ans avant d'être décapitée en 1587. Quel est son nom ?`,
+    reponses: [`marie stuart`, `mary stuart`, `marie ire d ecosse`, `marie 1re d ecosse`, `mary queen of scots`]
+  },
+  /* 29 */ {
+    indice: `Bulletin spécial juin : chaleur persistante sur les secrets bien gardés. Quelques éclaircies de mystère en soirée. Les prévisions restent floues. C'est voulu.`,
+    enigme: `Je suis le philosophe florentin de la Renaissance qui, dans un célèbre traité de 1513, conseilla aux princes de préférer être craints plutôt qu'aimés. Qui suis-je ?`,
+    reponses: [`machiavel`, `nicolas machiavel`, `niccolo machiavelli`, `machiavelli`]
+  },
+  /* 30 */ {
+    indice: `Si tu devais décrire ce mois de mai en trois mots, lesquels tu choisirais ?`,
+    enigme: `La prise de Constantinople en 1453 marqua la fin de l'Empire byzantin. Quel sultan ottoman la conquit à 21 ans ?`,
+    reponses: [`mehmed ii`, `mehmed 2`, `mehmet ii`, `mahomet ii`, `mehmed le conquerant`]
+  },
+  /* 31 */ {
+    indice: `Elle avait compté les jours sans savoir ce qu'elle comptait. Chaque matin, un message. Chaque message, une porte. Chaque porte, fermée. Jusqu'à ce qu'une ne le soit plus.`,
+    enigme: `Je suis le traité de 1648 qui mit fin à la Guerre de Trente Ans et posa les bases du système des États-nations en Europe. Dans quelle ville westphalienne fut signé l'un de mes deux volets ? (Osnabrück ou Münster)`,
+    reponses: [`osnabruck`, `munster`, `osnabrueck`, `muenster`, `traite de westphalie`, `westphalie`]
+  },
+  /* 32 */ {
+    indice: `L'herbe pousse sans bruit. L'eau creuse sans se presser. Les grandes choses ont toujours eu beaucoup de patience.`,
+    enigme: `Cette femme dirigea l'Égypte ptolémaïque, parla neuf langues, séduisit César puis Marc Antoine. Qui est-elle ?`,
+    reponses: [`cleopatre`, `cleopatre vii`, `cleopatra`]
+  },
+  /* 33 */ {
+    indice: `Question du jour : combien de secrets peut contenir un mois de juin ?\nA) Exactement un\nB) Autant qu'on veut\nC) Ça dépend de la personne qui le vit\nD) La question est mal posée.`,
+    enigme: `Je suis le moine augustinien qui afficha ses 95 thèses à Wittenberg en 1517 contre la vente des indulgences par l'Église. Qui suis-je ?`,
+    reponses: [`luther`, `martin luther`]
+  },
+  /* 34 */ {
+    indice: `Choses qui ont la même forme que l'attente :\n— Un ciel juste avant l'orage\n— Une page blanche\n— Le silence entre deux notes\n— Ce mois de juin\n— Toi, en ce moment`,
+    enigme: `La bataille de Lépante en 1571 opposa la Sainte Ligue à l'Empire ottoman. Un écrivain espagnol célèbre y participa et y perdit l'usage de sa main gauche. Qui était-il ?`,
+    reponses: [`cervantes`, `miguel de cervantes`, `cervantes saavedra`]
+  },
+  /* 35 */ {
+    indice: `Les planètes s'alignent sur quelque chose que tu ne vois pas encore. Mercure est rétrograde mais ça n'a aucun rapport. Ce qui s'en vient est plus grand que Mercure.`,
+    enigme: `Cet empereur romain du IVème siècle légalisa le christianisme par l'édit de Milan en 313. Qui est-il ?`,
+    reponses: [`constantin`, `constantin ier`, `constantin i`, `constantin 1er`, `constantin le grand`]
+  },
+  /* 36 */ {
+    indice: `Il existe des lieux où même les pierres ont appris à écouter. Je reflète la lumière différemment selon l'heure. La nuit je deviens autre chose. Le jour je garde mes secrets.`,
+    enigme: `Je suis la révolte paysanne anglaise de 1381, menée par un homme dont le nom est resté dans l'histoire. Les révoltés marchèrent sur Londres et rencontrèrent le jeune roi Richard II. Qui me mena ?`,
+    reponses: [`wat tyler`, `walter tyler`]
+  },
+  /* 37 */ {
+    indice: `Est-ce qu'il t'arrive de te dire que le temps s'arrête parfois ?`,
+    enigme: `Vercingétorix se rendit à César après la bataille d'Alésia en 52 av. J.-C. Combien d'années fut-il emprisonné à Rome avant d'être exécuté ?`,
+    reponses: [`6 ans`, `six ans`, `6`, `six`]
+  },
+  /* 38 */ {
+    indice: `Quelque chose dans l'air a changé de couleur. Pas le ciel. Pas la lumière. Quelque chose d'invisible que seuls certains jours savent porter.`,
+    enigme: `Cette reine de France, épouse de Henri II, fut régente, mère de trois rois et d'une reine. On lui attribue l'introduction d'une pratique culinaire italienne en France. Qui est-elle ?`,
+    reponses: [`catherine de medicis`, `catherine de medici`]
+  },
+  /* 39 */ {
+    indice: `Il avait choisi ce soir-là entre mille autres. Pas au hasard. Pour la lumière à cette heure précise. Pour quelque chose d'indéfinissable. Pour que ce soit parfait.`,
+    enigme: `Je suis le philosophe grec qui fut le précepteur d'Alexandre le Grand, fondai le Lycée à Athènes et classifiai le savoir humain en disciplines distinctes pour la première fois. Qui suis-je ?`,
+    reponses: [`aristote`, `aristoteles`]
+  },
+  /* 40 */ {
+    indice: `Chère Manon, je t'écris depuis un peu plus près qu'avant. Le paysage a changé. Il y a de l'eau, des arbres très vieux, et une lumière que je n'avais encore jamais vue. Je ne peux toujours pas te dire où c'est. Bientôt.`,
+    enigme: `La révocation de l'édit de Nantes en 1685 provoqua l'exode de 200 000 protestants français — les huguenots — vers l'Europe du Nord. Quel nom donnait-on à cet exode ?`,
+    reponses: [`refuge`, `le refuge`, `refuge huguenot`, `le grand refuge`]
+  },
+  /* 41 */ {
+    indice: `On approche. Je ne dirai pas de quoi. Mais l'air le sait. Les arbres aussi, peut-être. Toi tu cherches encore. C'est bien. Continue.`,
+    enigme: `Je suis le pape qui, en l'an 800, couronna Charlemagne empereur d'Occident. Qui suis-je ?`,
+    reponses: [`leon iii`, `leon 3`, `saint leon iii`, `leon iii le grand`]
+  },
+  /* 42 */ {
+    indice: `Choses qui se passent dans moins de deux semaines :\n— Le soleil se lèvera\n— Les oiseaux feront leur travail habituel\n— Quelqu'un quelque part mangera une tartine\n— Et autre chose\n— Quelque chose qui te concerne directement\n— Mais je ne dirai rien de plus`,
+    enigme: `Cette amazone de la Révolution française, auteure de la Déclaration des droits de la femme et de la citoyenne en 1791, fut guillotinée en 1793. Qui était-elle ?`,
+    reponses: [`olympe de gouges`, `marie gouze`]
+  },
+  /* 43 */ {
+    indice: `Si quelqu'un t'avait préparé quelque chose pendant LONGTEMPS, qu'est-ce que tu espérerais que ce soit ?`,
+    enigme: `Je suis la bataille de 1302 où les milices flamandes à pied écrasèrent la chevalerie française du roi Philippe IV. Mon nom vient des milliers d'éperons dorés récupérés sur les chevaliers morts. Comment m'appelle-t-on ?`,
+    reponses: [`bataille des eperons d or`, `eperons d or`, `bataille des eperons`, `la bataille des eperons d or`, `kortrijk`, `courtrai`]
+  },
+  /* 44 */ {
+    indice: `Elle s'était trompée plusieurs fois. Elle avait cherché dans la mauvaise direction, dans les mauvais détails, avec les mauvaises clés. C'est souvent comme ça que fonctionnent les meilleures surprises.`,
+    enigme: `Socrate n'écrivit jamais rien lui-même. Tout ce qu'on lui attribue vient de ses disciples. Mais l'un d'eux le dépeint très différemment de Platon — de façon bien plus prosaïque et moins philosophique. Qui est-il ?`,
+    reponses: [`xenophon`]
+  },
+  /* 45 */ {
+    indice: `Il reste peu de jours. Je les compte de mon côté aussi. Chacun d'eux a un goût particulier, celui de quelque chose qu'on retient encore un peu avant de lâcher.`,
+    enigme: `Cette bataille de 1515 est considérée comme la première grande victoire de François Ier. Elle opposa la France aux mercenaires suisses dans le nord de l'Italie. Où eut-elle lieu ?`,
+    reponses: [`marignan`, `bataille de marignan`, `la bataille de marignan`]
+  },
+  /* 46 */ {
+    indice: `Cette semaine sera décisive. Pas pour les raisons que tu crois. Les astres ont vu quelque chose venir de loin, de très loin, et ils sourient. C'est suffisamment rare pour être mentionné.`,
+    enigme: `Je suis le code d'honneur des guerriers japonais médiévaux — l'équivalent spirituel de la chevalerie européenne. Comment m'appelle-t-on ?`,
+    reponses: [`bushido`, `le bushido`, `voie du guerrier`]
+  },
+  /* 47 */ {
+    indice: `Je suis ce qui arrive quand l'attente prend fin. Je suis le contraire du silence avant. Je suis ce pour quoi on patiente sans savoir qu'on patiente. Dans ... jours, tu sauras.`,
+    enigme: `Thomas More fut décapité en 1535 pour avoir refusé de reconnaître Henri VIII comme chef de l'Église d'Angleterre. Il avait écrit un texte fondateur de la pensée politique en 1516 — dont le titre signifie « nulle part » en grec. Quel est ce titre ?`,
+    reponses: [`utopia`, `utopie`, `l utopie`, `de optimo rei publicae statu deque nova insula utopia`]
+  },
+  /* 48 */ {
+    indice: `Bulletin de la semaine : conditions idéales sur l'ensemble du territoire des secrets. Ciel dégagé prévu pour bientôt. Températures en hausse.`,
+    enigme: `La guerre de Cent Ans ne dura pas exactement cent ans. Combien d'années dura-t-elle précisément, entre la bataille de Crécy (1346) et la bataille de Castillon (1453) ?`,
+    reponses: [`116 ans`, `116`, `cent seize ans`, `cent seize`]
+  },
+  /* 49 */ {
+    indice: `Est-ce que tu as deviné ? Sois honnête.`,
+    enigme: `Je suis l'historien romain qui écrivit « Ab Urbe Condita », une histoire de Rome depuis sa fondation. Qui suis-je ?`,
+    reponses: [`tite live`, `tite-live`, `titus livius`, `livy`]
+  },
+  /* 50 */ {
+    indice: `C'est peu. C'est long. C'est exactement la bonne durée pour ce qui s'en vient.`,
+    enigme: `Cette reine wisigothique du VIème siècle, régente de l'Espagne après l'assassinat de son mari, fut elle-même assassinée par son fils Récared après sa conversion au catholicisme. Qui était-elle ?`,
+    reponses: [`goswinth`, `goswinthe`, `gosvinthie`, `goswintha`]
+  },
+  /* 51 */ {
+    indice: `Elle avait arrêté de chercher. Pas par abandon, par confiance. Quelque chose lui disait que quand ça arriverait, elle le saurait. Que ça ne ressemblerait à rien de ce qu'elle avait imaginé. Elle avait raison.`,
+    enigme: `Je suis pensée depuis le début. Je me cache dans chacun des messages que tu as reçus. Prends la première lettre du mot le plus long de chaque message, du jour 1 au jour 51, dans l'ordre. Le mot de passe est ce que tu obtiens.`,
+    reponses: [`demain`]
+  },
+  /* 52 */ {
+    indice: `au milieu des étoiles. Une nuit de juin, et peut-être une réponse qui ne saurait tarder.`,
+    enigme: `Aujourd'hui il n'y a pas d'énigme. Le mot de passe est ton prénom, en minuscules.`,
+    reponses: [`manon`]
+  }
+];
+
+/* ============================================================
+   MESSAGES
+   ============================================================ */
+const MESSAGES_DATA = [
+  { text: `Joyeux anniversaire Loute. 19 ans. Je ne sais pas toujours trouver les mots, mais je sais que t'avoir dans ma vie, c'est une chance que je ne prends pas à la légère.`, kind: `normal` },
+  { text: `QUE DU LOVE 🤍`, kind: `accent` },
+  { text: `Il y a des personnes qui font du bien juste en étant là. Toi tu fais partie de ces gens-là. Sans effort, sans même le savoir. C'est rare.`, kind: `normal` },
+  { text: `J'espère que ce cadeau te feras plaisir !!`, kind: `normal` },
+  { text: `Merci pour tous nos souvenirs, nos fous rires et tout ce qu'on partage. J'ai tellement de chance de t'avoir. Hâte de créer encore plein de moments ensemble.`, kind: `normal` },
+  { text: `je t'aime ❤️`, kind: `signature` },
+  { text: `<a href="https://fullyoflove.netlify.app" target="_blank" rel="noopener">fullyoflove.netlify.app</a>`, kind: `normal`, html: true }
+];
+
+/* ============================================================
+   CONFIGURATION — dates & logique
+   ============================================================ */
+const TOTAL_DAYS = 52;
+// 6 mai 2026 à 04:00 Europe/Paris (UTC+2 en été)
+const START_DATE_ISO = `2026-05-06T02:00:00Z`; // 02:00 UTC = 04:00 Paris (CEST)
+const START_DATE = new Date(START_DATE_ISO);
+const STORAGE_KEY = `manon-birthday-v1`;
+
+/* ============================================================
+   FICHIER OFFICIEL — logique réelle, ouverture jour par jour à 4h
+   ============================================================ */
+function isPreviewMode() {
+  return false;
+}
+
+/* ============================================================
+   DATE LOGIC — renvoie l'index du dernier jour débloqué
+   -1 = avant le 6 mai, TOTAL_DAYS-1 = tout est ouvert
+   ============================================================ */
+function getTodayIndex() {
+  if (isPreviewMode()) return TOTAL_DAYS - 1;
+  const now = new Date();
+  const diffMs = now.getTime() - START_DATE.getTime();
+  if (diffMs < 0) return -1;
+  const dayIndex = Math.floor(diffMs / (24 * 60 * 60 * 1000));
+  return Math.min(dayIndex, TOTAL_DAYS - 1);
+}
+
+/* ============================================================
+   PERSISTANCE localStorage
+   ============================================================ */
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { solved: [] };
+    const data = JSON.parse(raw);
+    return { solved: Array.isArray(data.solved) ? data.solved : [] };
+  } catch {
+    return { solved: [] };
+  }
+}
+function saveProgress(progress) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch {}
+}
+function markSolved(dayIndex) {
+  const p = loadProgress();
+  if (!p.solved.includes(dayIndex)) {
+    p.solved.push(dayIndex);
+    saveProgress(p);
+  }
+}
+function isSolved(dayIndex) {
+  return loadProgress().solved.includes(dayIndex);
+}
+
+/* ============================================================
+   NORMALISATION des réponses
+   ============================================================ */
+function normalize(s) {
+  return String(s || ``)
+    .toLowerCase()
+    .normalize(`NFD`)
+    .replace(/[\u0300-\u036f]/g, ``)
+    .replace(/[-–—'`'.,;:!?()«»""]/g, ` `)
+    .replace(/\s+/g, ` `)
+    .trim();
+}
+function checkAnswer(input, accepted) {
+  const norm = normalize(input);
+  if (!norm) return false;
+  return accepted.some(a => normalize(a) === norm);
+}
+
+/* ============================================================
+   INTRO — entrée dans le site
+   ============================================================ */
+function enterSite() {
+  const intro = document.getElementById(`intro`);
+  const app = document.getElementById(`app`);
+  intro.classList.add(`hidden`);
+  setTimeout(() => {
+    intro.style.display = `none`;
+    app.hidden = false;
+    buildGrid();
+    buildMessages();
+  }, 700);
+}
+
+/* ============================================================
+   NAV — onglets
+   ============================================================ */
+function initTabs() {
+  document.querySelectorAll(`.tab`).forEach(btn => {
+    btn.addEventListener(`click`, () => {
+      const tabId = btn.dataset.tab;
+      document.querySelectorAll(`.tab`).forEach(b => {
+        b.classList.remove(`active`);
+        b.setAttribute(`aria-selected`, `false`);
+      });
+      btn.classList.add(`active`);
+      btn.setAttribute(`aria-selected`, `true`);
+      document.querySelectorAll(`.tab-panel`).forEach(p => p.classList.remove(`active`));
+      document.getElementById(`panel-${tabId}`).classList.add(`active`);
+    });
+  });
+}
+
+/* ============================================================
+   GRID — construction des cases
+   ============================================================ */
+function buildGrid() {
+  const grid = document.getElementById(`grid`);
+  const todayIndex = getTodayIndex();
+  grid.innerHTML = ``;
+
+  if (todayIndex < 0) {
+    const empty = document.createElement(`div`);
+    empty.className = `empty-state`;
+    empty.innerHTML = `
+      <div class="ornament" aria-hidden="true">
+        <svg viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="3" fill="currentColor" opacity="0.7"/>
+          <ellipse cx="18" cy="9" rx="3" ry="5" fill="currentColor" opacity="0.5"/>
+          <ellipse cx="18" cy="27" rx="3" ry="5" fill="currentColor" opacity="0.5"/>
+          <ellipse cx="9" cy="18" rx="5" ry="3" fill="currentColor" opacity="0.5"/>
+          <ellipse cx="27" cy="18" rx="5" ry="3" fill="currentColor" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="big">L'aventure n'a pas encore commencé</span>
+      La première porte s'ouvrira bientôt.
+    `;
+    grid.appendChild(empty);
+    return;
+  }
+
+  for (let i = 0; i <= todayIndex; i++) {
+    const card = document.createElement(`button`);
+    card.className = `card`;
+    card.type = `button`;
+    const solved = isSolved(i);
+    const isToday = (i === todayIndex);
+    const isLast = (i === TOTAL_DAYS - 1);
+
+    if (solved) card.classList.add(`solved`);
+    else if (isToday) card.classList.add(`available`);
+
+    if (isLast) card.classList.add(`day-52`);
+
+    card.setAttribute(`aria-label`, `Jour ${String(i + 1).padStart(2, `0`)}${solved ? `, débloqué` : isToday ? `, disponible aujourd'hui` : ``}`);
+    card.style.setProperty(`--card-index`, i);
+
+    card.innerHTML = `
+      <span class="card-corner tl" aria-hidden="true"></span>
+      <span class="card-corner br" aria-hidden="true"></span>
+      <span class="card-number">${String(i + 1).padStart(2, `0`)}</span>
+      <span class="card-label">jour</span>
+    `;
+
+    card.addEventListener(`click`, () => openDay(i));
+    grid.appendChild(card);
+  }
+}
+
+/* ============================================================
+   OPEN DAY — ouvre énigme ou indice
+   ============================================================ */
+function openDay(dayIndex) {
+  if (isSolved(dayIndex)) {
+    showIndice(dayIndex);
+  } else {
+    showEnigme(dayIndex);
+  }
+}
+
+function showEnigme(dayIndex) {
+  const data = DAYS_DATA[dayIndex];
+  document.getElementById(`enigme-day`).textContent = String(dayIndex + 1).padStart(2, `0`);
+  document.getElementById(`enigme-text`).textContent = data.enigme;
+  document.getElementById(`enigme-input`).value = ``;
+  document.getElementById(`enigme-error`).classList.remove(`show`);
+  currentDayIndex = dayIndex;
+  openModal(`modal-enigme`);
+  setTimeout(() => document.getElementById(`enigme-input`).focus(), 300);
+}
+
+function showIndice(dayIndex) {
+  const data = DAYS_DATA[dayIndex];
+  document.getElementById(`indice-day`).textContent = String(dayIndex + 1).padStart(2, `0`);
+  document.getElementById(`indice-text`).textContent = data.indice;
+  const sig = document.getElementById(`indice-signature`);
+  if (dayIndex === TOTAL_DAYS - 1) {
+    sig.textContent = `♪`;
+    sig.style.fontSize = `3rem`;
+  } else {
+    sig.textContent = `—`;
+    sig.style.fontSize = ``;
+  }
+  openModal(`modal-indice`);
+}
+
+/* ============================================================
+   SUBMIT ENIGME
+   ============================================================ */
+let currentDayIndex = -1;
+function submitEnigme(event) {
+  event.preventDefault();
+  const input = document.getElementById(`enigme-input`).value;
+  const data = DAYS_DATA[currentDayIndex];
+  const err = document.getElementById(`enigme-error`);
+  if (checkAnswer(input, data.reponses)) {
+    err.classList.remove(`show`);
+    markSolved(currentDayIndex);
+    closeModal();
+    setTimeout(() => {
+      buildGrid();
+      showIndice(currentDayIndex);
+    }, 300);
+  } else {
+    err.classList.add(`show`);
+    const form = document.getElementById(`enigme-form`);
+    form.animate([
+      { transform: `translateX(0)` },
+      { transform: `translateX(-6px)` },
+      { transform: `translateX(6px)` },
+      { transform: `translateX(-4px)` },
+      { transform: `translateX(0)` }
+    ], { duration: 300, easing: `ease-in-out` });
+  }
+  return false;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(id) {
+  document.querySelectorAll(`.modal.open`).forEach(m => m.classList.remove(`open`));
+  document.getElementById(id).classList.add(`open`);
+  document.body.style.overflow = `hidden`;
+}
+function closeModal() {
+  document.querySelectorAll(`.modal.open`).forEach(m => m.classList.remove(`open`));
+  document.body.style.overflow = ``;
+}
+document.addEventListener(`keydown`, (e) => {
+  if (e.key === `Escape`) closeModal();
+});
+
+/* ============================================================
+   SWIPE-DOWN pour fermer les modales sur mobile
+   ============================================================ */
+function initSwipeDismiss() {
+  document.querySelectorAll(`.modal-panel`).forEach(panel => {
+    let startY = 0;
+    let currentY = 0;
+    let dragging = false;
+    let atTop = true;
+
+    panel.addEventListener(`touchstart`, (e) => {
+      atTop = panel.scrollTop <= 0;
+      if (!atTop) return;
+      startY = e.touches[0].clientY;
+      currentY = startY;
+      dragging = true;
+      panel.style.transition = `none`;
+    }, { passive: true });
+
+    panel.addEventListener(`touchmove`, (e) => {
+      if (!dragging || !atTop) return;
+      currentY = e.touches[0].clientY;
+      const delta = currentY - startY;
+      if (delta > 0) {
+        panel.style.transform = `translateY(${delta * 0.5}px)`;
+      }
+    }, { passive: true });
+
+    panel.addEventListener(`touchend`, () => {
+      if (!dragging) return;
+      dragging = false;
+      panel.style.transition = ``;
+      const delta = currentY - startY;
+      if (delta > 100) {
+        closeModal();
+      }
+      panel.style.transform = ``;
+    });
+  });
+}
+
+/* ============================================================
+   SCROLL INTO VIEW quand le clavier apparait sur mobile
+   ============================================================ */
+function initInputFocus() {
+  const input = document.getElementById(`enigme-input`);
+  if (!input) return;
+  input.addEventListener(`focus`, () => {
+    setTimeout(() => {
+      input.scrollIntoView({ behavior: `smooth`, block: `center` });
+    }, 300);
+  });
+}
+
+/* ============================================================
+   MESSAGES
+   ============================================================ */
+function buildMessages() {
+  const wrap = document.getElementById(`messages`);
+  wrap.innerHTML = ``;
+  MESSAGES_DATA.forEach((msg, i) => {
+    const card = document.createElement(`article`);
+    card.className = `message-card ${msg.kind || `normal`}`;
+    card.style.setProperty(`--msg-index`, i);
+    const num = document.createElement(`span`);
+    num.className = `message-number`;
+    num.textContent = String(i + 1).padStart(2, `0`);
+    const text = document.createElement(`p`);
+    text.className = `message-text`;
+    if (msg.html) text.innerHTML = msg.text;
+    else text.textContent = msg.text;
+    if (msg.kind !== `accent` && msg.kind !== `signature`) card.appendChild(num);
+    card.appendChild(text);
+    wrap.appendChild(card);
+  });
+}
+
+/* ============================================================
+   PREVIEW BADGE
+   ============================================================ */
+function showPreviewBadge() {
+  if (!isPreviewMode()) return;
+  const badge = document.createElement(`div`);
+  badge.className = `preview-badge`;
+  badge.textContent = `Mode preview`;
+  document.body.appendChild(badge);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+/* ============================================================
+   BLOQUER LE ZOOM (pinch & Ctrl+molette) — sans casser le scroll
+   ============================================================ */
+function blockZoom() {
+  // Bloque le pinch-zoom uniquement (multi-touch)
+  document.addEventListener(`gesturestart`, e => e.preventDefault());
+  document.addEventListener(`gesturechange`, e => e.preventDefault());
+  document.addEventListener(`gestureend`, e => e.preventDefault());
+  // Bloque le zoom Ctrl+molette / Ctrl+/- desktop
+  document.addEventListener(`wheel`, e => {
+    if (e.ctrlKey) e.preventDefault();
+  }, { passive: false });
+  document.addEventListener(`keydown`, e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === `+` || e.key === `-` || e.key === `=` || e.key === `0`)) {
+      e.preventDefault();
+    }
+  });
+}
+
+document.addEventListener(`DOMContentLoaded`, () => {
+  initTabs();
+  initSwipeDismiss();
+  initInputFocus();
+  blockZoom();
+  showPreviewBadge();
+  // En preview, on passe directement au site
+  if (isPreviewMode()) {
+    document.getElementById(`intro`).style.display = `none`;
+    document.getElementById(`app`).hidden = false;
+    buildGrid();
+    buildMessages();
+  }
+});
+</script>
+</body>
+</html>
